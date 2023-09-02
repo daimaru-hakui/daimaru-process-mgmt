@@ -8,7 +8,7 @@ export type User = {
 };
 
 export type Task = {
-  id:string
+  id: string;
   serialNumber: string,
   processNumber: string,
   customer: string;
@@ -16,5 +16,33 @@ export type Task = {
   sizeDetails: string;
   quantity: number;
   comment: string;
-  createdAt:Timestamp
-}
+  reception: {
+    start: Date | any;
+    end: Date | any;
+  };
+  pattern: {
+    start: Date | any;
+    end: Date | any;
+  };
+  cutting: {
+    start: Date | any;
+    end: Date | any;
+  };
+  materials: {
+    start: Date | any;
+    end: Date | any;
+  };
+  sewing: {
+    start: Date | any;
+    end: Date | any;
+  };
+  finishing: {
+    start: Date | any;
+    end: Date | any;
+  };
+  warehouse: {
+    start: Date | any;
+    end: Date | any;
+  };
+  createdAt: Timestamp;
+};

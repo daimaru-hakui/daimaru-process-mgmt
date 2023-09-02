@@ -3,6 +3,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from "../../firebase";
+
 const Measure = () => {
   const toast = useToast();
   const [isActive, setIsActive] = useState(true);
@@ -10,6 +11,7 @@ const Measure = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { pathname } = useLocation();
   const name = pathname.split('/').pop();
+  let title = "";
 
 
   useEffect(() => {
@@ -17,8 +19,28 @@ const Measure = () => {
     inputRef.current.focus();
   }, [isActive]);
 
-  const handleChangeActive = () => {
-    setIsActive((state) => !state);
+  switch (name) {
+    case "reception":
+      title = "受付";
+      break;
+    case "pattern":
+      title = "パターン準備";
+      break;
+    case "cutting":
+      title = "裁断";
+      break;
+    case "materials":
+      title = "資材準備";
+      break;
+    case "sewing":
+      title = "縫製加工";
+      break;
+    case "warehouse":
+      title = "倉庫入荷";
+  }
+
+  const handleChangeActive = (bool: boolean) => {
+    setIsActive(bool);
   };
 
   const handleChangeSerialNumber = (
@@ -40,13 +62,7 @@ const Measure = () => {
       const docRef = doc(db, "tasks", serialNumber);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        toast({
-          title: 'その加工指示書は存在しません。',
-          status: 'error',
-          duration: 2000,
-          isClosable: true,
-          position: 'top-right',
-        });
+        errorToastSerialNumber();
         throw new Error("シリアルナンバーが見つかりません。");
       }
       const prev = docSnap.data();
@@ -57,22 +73,9 @@ const Measure = () => {
           end: prev[name].end || ""
         }
       });
-      toast({
-        title: '登録が完了しました。',
-        description: `開始時刻:${new Date()}`,
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-        position: 'top-right',
-      });
+      successToast();
     } catch (error) {
-      toast({
-        title: '登録が失敗しました。',
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-        position: 'top-right',
-      });
+      errorToastNotExist();
     } finally {
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -85,44 +88,56 @@ const Measure = () => {
       const docRef = doc(db, "tasks", serialNumber);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        toast({
-          title: 'その加工指示書は存在しません。',
-          status: 'error',
-          duration: 2000,
-          isClosable: true,
-          position: 'top-right',
-        });
+        errorToastSerialNumber();
         throw new Error("シリアルナンバーが見つかりません。");
       }
       const prev = docSnap.data();
       if (!prev) return;
       await updateDoc(docRef, {
         [name]: {
-          start: prev[name].end || "",
+          start: prev[name].start || "",
           end: new Date(),
         }
       });
-      toast({
-        title: '登録が完了しました。',
-        description: `終了時刻:${new Date()}`,
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-        position: 'top-right',
-      });
+      successToast();
     } catch (error) {
-      toast({
-        title: '登録が失敗しました。',
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-        position: 'top-right',
-      });
+      errorToastNotExist();
     } finally {
       if (inputRef.current) {
         inputRef.current.value = "";
       }
     }
+  };
+
+  const errorToastSerialNumber = () => {
+    toast({
+      title: 'その加工指示書は存在しません。',
+      status: 'error',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
+
+  const errorToastNotExist = () => {
+    toast({
+      title: '登録が失敗しました。',
+      status: 'error',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
+
+  const successToast = () => {
+    toast({
+      title: `No.${serialNumber} 登録が完了しました。`,
+      description: `終了時刻:${new Date()}`,
+      status: 'success',
+      duration: 4000,
+      isClosable: true,
+      position: 'top-right',
+    });
   };
 
   return (
@@ -134,14 +149,14 @@ const Measure = () => {
       rounded="md"
       shadow="md"
     >
-      <Heading as='h2'></Heading>
-      <Flex gap={6}>
+      <Heading as='h2' fontSize={24}>{title}</Heading>
+      <Flex gap={6} mt={6}>
         <Button
           w="full"
           h={24}
           fontSize={24}
           colorScheme={isActive ? "blue" : "gray"}
-          onClick={handleChangeActive}>
+          onClick={() => handleChangeActive(true)}>
           Start
         </Button>
         <Button
@@ -149,7 +164,7 @@ const Measure = () => {
           h={24}
           fontSize={24}
           colorScheme={isActive ? "gray" : "red"}
-          onClick={handleChangeActive}
+          onClick={() => handleChangeActive(false)}
         >End
         </Button>
       </Flex>
@@ -180,5 +195,4 @@ const Measure = () => {
     </Container>
   );
 };
-export default
-  Measure;
+export default Measure;

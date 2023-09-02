@@ -14,6 +14,7 @@ const MeasureList = () => {
         <MeasureCard title="裁断" path={`${path}/cutting`} />
         <MeasureCard title="資材準備" path={`${path}/materials`} />
         <MeasureCard title="縫製加工" path={`${path}/sewing`} />
+        <MeasureCard title="仕上げ" path={`${path}/finishing`} />
         <MeasureCard title="倉庫入荷" path={`${path}/warehouse`} />
       </Grid>
     </Container>
