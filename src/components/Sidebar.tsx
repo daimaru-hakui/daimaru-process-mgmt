@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 import { sidebarLinks } from "../utils/Links";
 import { Link, useLocation } from "react-router-dom";
 import { useStore } from "../../store";
@@ -6,6 +6,8 @@ import { useStore } from "../../store";
 const Sidebar = () => {
   const { pathname } = useLocation();
   const isSidebar = useStore((state) => state.isSidebar);
+  const bg = useColorModeValue('white', 'gray.700');
+  const listColor = useColorModeValue('gray.100', 'gray.900');
 
   return (
     <Box as="aside"
@@ -14,7 +16,7 @@ const Sidebar = () => {
       minH="100vh"
       transition="0.5s"
       shadow="md"
-      bg="white"
+      bg={bg}
       display={{ base: "none", md: "block" }}
       transform={isSidebar ? "translateX(0)" : " translateX(-300px)"}
     >
@@ -29,8 +31,8 @@ const Sidebar = () => {
               justify="start"
               align="center"
               rounded="md"
-              _hover={{ bg: "gray.100" }}
-              bg={pathname === path ? "gray.100" : "transparent"}
+              _hover={{ bg: listColor }}
+              bg={pathname === path ? listColor : "transparent"}
             >
               <Box>{icon}</Box>
               <Box ml={6} >{name}</Box>

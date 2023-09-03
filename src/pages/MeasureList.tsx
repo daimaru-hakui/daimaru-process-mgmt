@@ -3,12 +3,13 @@ import MeasureCard from "../components/MeasureCard";
 
 const MeasureList = () => {
   const path = "/dashboard/measure-list";
+
   return (
     <Container
       w="full"
-      maxW={1200}
+      maxW={1800}
     >
-      <Grid templateColumns='repeat(2, 1fr)' gap={6}>
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', "xl": 'repeat(2, 1fr)', "2xl": 'repeat(3, 1fr)' }} gap={6}>
         <MeasureCard title="受付" path={`${path}/reception`} />
         <MeasureCard title="パターン準備" path={`${path}/pattern`} />
         <MeasureCard title="裁断" path={`${path}/cutting`} />

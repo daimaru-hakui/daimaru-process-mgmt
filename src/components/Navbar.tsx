@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, MenuDivider } from "@chakra-ui/react";
+import { Box, Flex, IconButton, MenuDivider, useColorModeValue } from "@chakra-ui/react";
 // import { headerLinks } from "../utils/Links";
 import { useNavigate } from "react-router-dom";
 import {
@@ -13,9 +13,10 @@ import { auth } from "../../firebase";
 import DrowerSidebar from "./DrowerSidebar";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { useStore } from '../../store';
-
+// import ColorModeButton from "./ColorModeButton";
 
 const Navbar = () => {
+  const bg = useColorModeValue('white', 'gray.700');
   const session = useStore((state) => state.session);
   const navigate = useNavigate();
   const toggleSidebar = useStore((state) => state.toggleSidebar);
@@ -26,7 +27,7 @@ const Navbar = () => {
   };
 
   return (
-    <Flex as="header" position="sticky" top={0} zIndex={10} px={6} h={12} w="full" justify="space-between" align="center" bg="white" shadow="sm">
+    <Flex as="header" position="sticky" top={0} zIndex={10} px={6} h={12} w="full" justify="space-between" align="center" bg={bg} shadow="sm">
       <Box display={{ base: "block", md: "none" }}>
         <DrowerSidebar />
       </Box>
@@ -36,11 +37,11 @@ const Navbar = () => {
       <Flex as="nav" gap={3} align="center">
 
         <Menu>
-
+          {/* <ColorModeButton /> */}
           <MenuButton
             as={IconButton}
             aria-label='Options'
-            icon={<IoMenuSharp fontSize={20} color="white" />}
+            icon={<IoMenuSharp fontSize={20} color={bg} />}
             colorScheme="yellow"
           />
           <MenuList>

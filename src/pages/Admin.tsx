@@ -9,6 +9,7 @@ import {
   Th,
   Td,
   TableContainer,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useStore } from "../../store";
 import { doc, updateDoc } from "firebase/firestore";
@@ -16,6 +17,7 @@ import { db } from "../../firebase";
 
 const Admin = () => {
   const users = useStore((state) => state.users);
+  const bg = useColorModeValue('white', 'gray.700');
 
   const handleChangeSwitch = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -38,7 +40,7 @@ const Admin = () => {
       p={6}
       w="full"
       maxW={1200}
-      bg="white"
+      bg={bg}
       rounded="md"
       shadow="md"
     >

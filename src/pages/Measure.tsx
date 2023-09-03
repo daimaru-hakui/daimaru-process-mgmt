@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Heading, Input, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Heading, Input, Text, useColorModeValue, useToast } from "@chakra-ui/react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -6,13 +6,13 @@ import { db } from "../../firebase";
 
 const Measure = () => {
   const toast = useToast();
+  const bg = useColorModeValue('white', 'gray.700');
   const [isActive, setIsActive] = useState(true);
   const [serialNumber, setSerialNumber] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { pathname } = useLocation();
   const name = pathname.split('/').pop();
   let title = "";
-
 
   useEffect(() => {
     if (!inputRef.current) return;
@@ -41,6 +41,8 @@ const Measure = () => {
 
   const handleChangeActive = (bool: boolean) => {
     setIsActive(bool);
+    if (!inputRef.current) return;
+    inputRef.current.focus();
   };
 
   const handleChangeSerialNumber = (
@@ -67,6 +69,10 @@ const Measure = () => {
       }
       const prev = docSnap.data();
       if (!prev) return;
+      if (prev[name].start) {
+        const result = confirm("上書きしますか");
+        if (!result) return;
+      }
       await updateDoc(docRef, {
         [name]: {
           start: new Date(),
@@ -93,6 +99,10 @@ const Measure = () => {
       }
       const prev = docSnap.data();
       if (!prev) return;
+      if (prev[name].end) {
+        const result = confirm("上書きしますか");
+        if (!result) return;
+      }
       await updateDoc(docRef, {
         [name]: {
           start: prev[name].start || "",
@@ -145,7 +155,7 @@ const Measure = () => {
       p={6}
       w="full"
       maxW={1200}
-      bg="white"
+      bg={bg}
       rounded="md"
       shadow="md"
     >

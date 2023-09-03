@@ -8,6 +8,7 @@ import {
   Th,
   Td,
   TableContainer,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase';
@@ -18,7 +19,7 @@ import TimeToCalc from '../components/TimeToCalc';
 
 const AllTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
-
+  const bg = useColorModeValue('white', 'gray.700');
   useEffect(() => {
     const getTasks = async () => {
       const q = query(collection(db, "tasks"), orderBy("createdAt"));
@@ -32,7 +33,7 @@ const AllTasks = () => {
   }, []);
 
   return (
-    <Container p={6} maxW={1800} bg="white" rounded="md" shadow="md">
+    <Container p={6} maxW={1800} bg={bg} rounded="md" shadow="md">
       <Heading as="h2" fontSize="2xl">タスク一覧</Heading>
       <TableContainer w="full" p={0} mt={6}>
         <Table variant='simple'>

@@ -1,4 +1,4 @@
-import { Box, Button, Container, Heading, Input, Stack, Text, Textarea, useToast } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, Input, Stack, Text, Textarea, useColorModeValue, useToast } from "@chakra-ui/react";
 import {
   NumberInput,
   NumberInputField,
@@ -23,6 +23,7 @@ type Inputs = {
 
 const AddTask = () => {
   const toast = useToast();
+  const bg = useColorModeValue('white', 'gray.700');
   const { register, handleSubmit, reset, setFocus, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = data => {
     addTask(data);
@@ -34,13 +35,7 @@ const AddTask = () => {
     try {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        toast({
-          title: 'この番号はすでに登録済みです。',
-          status: 'error',
-          duration: 2000,
-          isClosable: true,
-          position: 'top-right',
-        });
+        errorToastExists();
         throw new Error("この番号はすでに登録済みです");
       }
       await setDoc(docRef, {
@@ -55,33 +50,52 @@ const AddTask = () => {
         warehouse: { start: "", end: "" },
         createdAt: serverTimestamp()
       });
-      toast({
-        title: '登録しました。',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-        position: 'top-right',
-      });
+      successToast();
     } catch (error) {
-      toast({
-        title: '登録に失敗しました。',
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-        position: 'top-right',
-      });
+      errorToast();
       console.log(error);
     } finally {
       reset();
     }
   };
 
+  const successToast = () => {
+    toast({
+      title: '登録しました。',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
+
+  const errorToastExists = () => {
+    toast({
+      title: 'この番号はすでに登録済みです。',
+      status: 'error',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
+
+  const errorToast = () => {
+    toast({
+      title: '登録に失敗しました。',
+      status: 'error',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
+
+
   useEffect(() => {
     setFocus("serialNumber");
   }, [setFocus]);
 
   return (
-    <Container p={6} bg="white" rounded="md" shadow="md">
+    <Container p={6} bg={bg} rounded="md" shadow="md">
       <Heading as="h2" fontSize="2xl">加工指示書登録</Heading>
       <Box as="form" mt={6} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={6}>
