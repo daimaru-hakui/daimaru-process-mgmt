@@ -9,20 +9,27 @@ import {
   Td,
   TableContainer,
   useColorModeValue,
+  Flex,
+  Button,
+  useToast,
 } from '@chakra-ui/react';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useEffect, useState } from 'react';
 import { Task } from '../../types';
 import TimeToCalc from '../components/TimeToCalc';
+import TaskEdit from '../components/TaskEdit';
+import { Link } from 'react-router-dom';
+import { AiOutlineDelete } from "react-icons/ai";
 
 
 const AllTasks = () => {
+  const toast = useToast();
   const [tasks, setTasks] = useState<Task[]>([]);
   const bg = useColorModeValue('white', 'gray.700');
   useEffect(() => {
     const getTasks = async () => {
-      const q = query(collection(db, "tasks"), orderBy("createdAt"));
+      const q = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
       onSnapshot(q, (snapshot) => (
         setTasks(snapshot.docs.map((doc) => (
           { ...doc.data(), id: doc.id } as Task
@@ -32,9 +39,49 @@ const AllTasks = () => {
     getTasks();
   }, []);
 
+  const deleteTask = async (id: string) => {
+    const result = confirm("削除して宜しいででしょうか");
+    if (!result) return;
+    try {
+      const docRef = doc(db, "tasks", id);
+      await deleteDoc(docRef);
+      successDeleteToast();
+    } catch (error) {
+      console.log(error);
+      errorDeleteToast();
+    }
+  };
+
+  const successDeleteToast = () => {
+    toast({
+      title: '削除しました。',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
+
+
+  const errorDeleteToast = () => {
+    toast({
+      title: "削除に失敗しました。",
+      status: 'error',
+      duration: 2000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
+
+
   return (
     <Container p={6} maxW={1800} bg={bg} rounded="md" shadow="md">
-      <Heading as="h2" fontSize="2xl">タスク一覧</Heading>
+      <Flex justify="space-between">
+        <Heading as="h2" fontSize="2xl">タスク一覧</Heading>
+        <Link to="/dashboard/add-task">
+          <Button colorScheme='yellow' color="white">追加</Button>
+        </Link>
+      </Flex>
       <TableContainer w="full" p={0} mt={6}>
         <Table variant='simple'>
           <Thead>
@@ -53,6 +100,7 @@ const AllTasks = () => {
               <Th>縫製加工</Th>
               <Th>仕上げ</Th>
               <Th>倉庫入荷</Th>
+              <Th>処理</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -85,6 +133,16 @@ const AllTasks = () => {
                 </Td>
                 <Td>
                   <TimeToCalc prop={task.warehouse} />
+                </Td>
+                <Td>
+                  <Flex gap={4}>
+                    <TaskEdit task={task} />
+                    <AiOutlineDelete
+                      cursor="pointer"
+                      fontSize={22}
+                      onClick={() => deleteTask(task.id)}
+                    />
+                  </Flex>
                 </Td>
               </Tr>
             ))}

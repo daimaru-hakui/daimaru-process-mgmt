@@ -9,7 +9,7 @@ const MeasureList = () => {
       w="full"
       maxW={1800}
     >
-      <Grid templateColumns={{ base: 'repeat(1, 1fr)', "xl": 'repeat(2, 1fr)', "2xl": 'repeat(3, 1fr)' }} gap={6}>
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)', "xl": 'repeat(4, 1fr)', "2xl": 'repeat(5, 1fr)' }} gap={6}>
         <MeasureCard title="受付" path={`${path}/reception`} />
         <MeasureCard title="パターン準備" path={`${path}/pattern`} />
         <MeasureCard title="裁断" path={`${path}/cutting`} />

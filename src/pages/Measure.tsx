@@ -56,7 +56,7 @@ const Measure = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!name) return;
-    if (e.code === "Enter") {
+    if (e.code === "Enter" || e.code === "Done") {
       isActive && updateTaskStart(name);
       !isActive && updateTaskEnd(name);
     }
