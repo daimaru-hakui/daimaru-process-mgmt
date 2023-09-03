@@ -13,6 +13,7 @@ import { auth } from "../../firebase";
 import DrowerSidebar from "./DrowerSidebar";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { useStore } from '../../store';
+import Logo from "./Logo";
 // import ColorModeButton from "./ColorModeButton";
 
 const Navbar = () => {
@@ -30,6 +31,9 @@ const Navbar = () => {
     <Flex as="header" position="sticky" top={0} zIndex={10} px={6} h={12} w="full" justify="space-between" align="center" bg={bg} shadow="sm">
       <Box display={{ base: "block", md: "none" }}>
         <DrowerSidebar />
+      </Box>
+      <Box display={{ base: "block", md: "none" }}>
+        <Logo />
       </Box>
       <Box display={{ base: "none", md: "block" }}>
         <HiMenuAlt2 fontSize={24} cursor="pointer" onClick={() => toggleSidebar(!isSidebar)} />
