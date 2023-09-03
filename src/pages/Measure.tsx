@@ -94,6 +94,7 @@ const Measure = () => {
       if (inputRef.current) {
         inputRef.current.value = "";
       }
+      setSerialNumber("");
     }
   };
 
@@ -128,6 +129,7 @@ const Measure = () => {
       if (inputRef.current) {
         inputRef.current.value = "";
       }
+      setSerialNumber("");
     }
   };
 
