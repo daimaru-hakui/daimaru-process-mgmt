@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from "../../firebase";
 import { useStore } from "../../store";
+import QrcodeReader from "../components/QrcodeReader";
 
 const Measure = () => {
   const session = useStore((state) => state.session);
@@ -195,12 +196,14 @@ const Measure = () => {
           <Flex mt={1} gap={3} align="center">
             <Input
               ref={inputRef}
+              value={serialNumber}
               onChange={handleChangeSerialNumber}
             />
             <Button type="submit">送信</Button>
           </Flex>
         </Box>
       </Box>
+      <QrcodeReader setSerialNumber={setSerialNumber} />
     </Container>
   );
 };
