@@ -3,8 +3,11 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from "../../firebase";
+import { useStore } from "../../store";
 
 const Measure = () => {
+  const session = useStore((state) => state.session);
+  const currentUser = session?.uid;
   const toast = useToast();
   const bg = useColorModeValue('white', 'gray.700');
   const [isActive, setIsActive] = useState(true);
@@ -61,10 +64,13 @@ const Measure = () => {
 
   const updateTaskStart = async (name: string) => {
     try {
+      if (!currentUser) return;
+      const userRef = doc(db, "users", currentUser);
       const docRef = doc(db, "tasks", serialNumber);
+      console.log(userRef);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        errorToastSerialNumber();
+        errorToastNotExists();
         throw new Error("シリアルナンバーが見つかりません。");
       }
       const prev = docSnap.data();
@@ -76,12 +82,13 @@ const Measure = () => {
       await updateDoc(docRef, {
         [name]: {
           start: new Date(),
-          end: prev[name].end || ""
+          end: prev[name].end || "",
+          startCreateUser: userRef
         }
       });
       successToast();
     } catch (error) {
-      errorToastNotExist();
+      errorToast();
     } finally {
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -91,10 +98,12 @@ const Measure = () => {
 
   const updateTaskEnd = async (name: string) => {
     try {
+      if (!currentUser) return;
+      const userRef = doc(db, "users", currentUser);
       const docRef = doc(db, "tasks", serialNumber);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        errorToastSerialNumber();
+        errorToastNotExists();
         throw new Error("シリアルナンバーが見つかりません。");
       }
       const prev = docSnap.data();
@@ -107,11 +116,12 @@ const Measure = () => {
         [name]: {
           start: prev[name].start || "",
           end: new Date(),
+          endCreateUser: userRef
         }
       });
       successToast();
     } catch (error) {
-      errorToastNotExist();
+      errorToast();
     } finally {
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -119,7 +129,7 @@ const Measure = () => {
     }
   };
 
-  const errorToastSerialNumber = () => {
+  const errorToastNotExists = () => {
     toast({
       title: 'その加工指示書は存在しません。',
       status: 'error',
@@ -129,7 +139,7 @@ const Measure = () => {
     });
   };
 
-  const errorToastNotExist = () => {
+  const errorToast = () => {
     toast({
       title: '登録が失敗しました。',
       status: 'error',
