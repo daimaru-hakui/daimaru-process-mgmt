@@ -66,7 +66,7 @@ const Measure = () => {
     try {
       if (!currentUser) return;
       const userRef = doc(db, "users", currentUser);
-      const docRef = doc(db, "tasks", serialNumber);
+      const docRef = doc(db, "tasks", serialNumber.trim());
       console.log(userRef);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
@@ -83,7 +83,8 @@ const Measure = () => {
         [name]: {
           start: new Date(),
           end: prev[name].end || "",
-          startCreateUser: userRef
+          startCreateUser: userRef,
+          endCreateUser: prev[name].endCreateUser,
         }
       });
       successToast();
@@ -100,7 +101,7 @@ const Measure = () => {
     try {
       if (!currentUser) return;
       const userRef = doc(db, "users", currentUser);
-      const docRef = doc(db, "tasks", serialNumber);
+      const docRef = doc(db, "tasks", serialNumber.trim());
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         errorToastNotExists();
@@ -116,6 +117,7 @@ const Measure = () => {
         [name]: {
           start: prev[name].start || "",
           end: new Date(),
+          startCreateUser: prev[name].startCreateUser,
           endCreateUser: userRef
         }
       });
