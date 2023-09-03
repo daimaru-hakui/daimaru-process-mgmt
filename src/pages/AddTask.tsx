@@ -42,12 +42,12 @@ const AddTask = () => {
         ...data,
         serialNumber: data.serialNumber.trim(),
         quantity: +data.quantity,
-        reception: { start: "", end: "" },
-        pattern: { start: "", end: "" },
-        cutting: { start: "", end: "" },
-        materials: { start: "", end: "" },
-        sewing: { start: "", end: "" },
-        warehouse: { start: "", end: "" },
+        reception: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
+        pattern: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
+        cutting: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
+        materials: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
+        sewing: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
+        warehouse: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         createdAt: serverTimestamp()
       });
       successToast();
