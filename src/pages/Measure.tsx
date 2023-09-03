@@ -54,15 +54,8 @@ const Measure = () => {
     setSerialNumber(e.target.value);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!name) return;
-    if (e.code === "Enter" || e.code === "Space") {
-      isActive && updateTaskStart(name);
-      !isActive && updateTaskEnd(name);
-    }
-  };
-
-  const handleClick = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
     if (!name) return;
     isActive && updateTaskStart(name);
     !isActive && updateTaskEnd(name);
@@ -197,32 +190,16 @@ const Measure = () => {
         </Button>
       </Flex>
       <Box mt={12}>
-        {isActive && (
-          <>
-            <Text >Start:</Text>
-            <Flex mt={1} gap={3} align="center">
-              <Input
-                ref={inputRef}
-                onChange={handleChangeSerialNumber}
-                onKeyDown={handleKeyDown}
-              />
-              <Button onClick={handleClick}>送信</Button>
-            </Flex>
-          </>
-        )}
-        {!isActive && (
-          <>
-            <Text >End:</Text>
-            <Flex mt={1} gap={3} align="center">
-              <Input
-                ref={inputRef}
-                onChange={handleChangeSerialNumber}
-                onKeyDown={handleKeyDown}
-              />
-              <Button onClick={handleClick}>送信</Button>
-            </Flex>
-          </>
-        )}
+        <Box as="form" onSubmit={handleSubmit}>
+          <Text >{isActive ? "Start" : "End"}</Text>
+          <Flex mt={1} gap={3} align="center">
+            <Input
+              ref={inputRef}
+              onChange={handleChangeSerialNumber}
+            />
+            <Button type="submit">送信</Button>
+          </Flex>
+        </Box>
       </Box>
     </Container>
   );
