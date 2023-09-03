@@ -62,6 +62,12 @@ const Measure = () => {
     }
   };
 
+  const handleClick = () => {
+    if (!name) return;
+    isActive && updateTaskStart(name);
+    !isActive && updateTaskEnd(name);
+  };
+
   const updateTaskStart = async (name: string) => {
     try {
       if (!currentUser) return;
@@ -194,23 +200,27 @@ const Measure = () => {
         {isActive && (
           <>
             <Text >Start:</Text>
-            <Input
-              mt={1}
-              ref={inputRef}
-              onChange={handleChangeSerialNumber}
-              onKeyDown={handleKeyDown}
-            />
+            <Flex mt={1} gap={3} align="center">
+              <Input
+                ref={inputRef}
+                onChange={handleChangeSerialNumber}
+                onKeyDown={handleKeyDown}
+              />
+              <Button onClick={handleClick}>送信</Button>
+            </Flex>
           </>
         )}
         {!isActive && (
           <>
             <Text >End:</Text>
-            <Input
-              mt={1}
-              ref={inputRef}
-              onChange={handleChangeSerialNumber}
-              onKeyDown={handleKeyDown}
-            />
+            <Flex mt={1} gap={3} align="center">
+              <Input
+                ref={inputRef}
+                onChange={handleChangeSerialNumber}
+                onKeyDown={handleKeyDown}
+              />
+              <Button onClick={handleClick}>送信</Button>
+            </Flex>
           </>
         )}
       </Box>
