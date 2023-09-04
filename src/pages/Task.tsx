@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useStore } from "../../store";
-import GanttChart from "../components/ganttChart";
+import GanttChart from "../components/GanttChart";
 
 // import PieChart from "../components/PieChart";
 
