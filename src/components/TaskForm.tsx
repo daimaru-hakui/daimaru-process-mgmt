@@ -70,6 +70,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         cutting: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         materials: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         sewing: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
+        finishing: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         warehouse: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         createdAt: serverTimestamp()
       });

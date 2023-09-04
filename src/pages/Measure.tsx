@@ -1,4 +1,14 @@
-import { Box, Button, Container, Flex, Heading, Input, Text, useColorModeValue, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Input,
+  Text,
+  useColorModeValue,
+  useToast,
+} from "@chakra-ui/react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -10,12 +20,12 @@ const Measure = () => {
   const session = useStore((state) => state.session);
   const currentUser = session?.uid;
   const toast = useToast();
-  const bg = useColorModeValue('white', 'gray.700');
+  const bg = useColorModeValue("white", "gray.700");
   const [isActive, setIsActive] = useState(true);
   const [serialNumber, setSerialNumber] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { pathname } = useLocation();
-  const name = pathname.split('/').pop();
+  const name = pathname.split("/").pop();
   let title = "";
 
   useEffect(() => {
@@ -39,6 +49,9 @@ const Measure = () => {
     case "sewing":
       title = "縫製加工";
       break;
+    case "finishing":
+      title = "仕上げ";
+      break;
     case "warehouse":
       title = "倉庫入荷";
   }
@@ -49,9 +62,7 @@ const Measure = () => {
     inputRef.current.focus();
   };
 
-  const handleChangeSerialNumber = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeSerialNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSerialNumber(e.target.value);
   };
 
@@ -85,7 +96,7 @@ const Measure = () => {
           end: prev[name].end || "",
           startCreateUser: userRef,
           endCreateUser: prev[name].endCreateUser,
-        }
+        },
       });
       successToast();
     } catch (error) {
@@ -119,8 +130,8 @@ const Measure = () => {
           start: prev[name].start || "",
           end: new Date(),
           startCreateUser: prev[name].startCreateUser,
-          endCreateUser: userRef
-        }
+          endCreateUser: userRef,
+        },
       });
       successToast();
     } catch (error) {
@@ -135,21 +146,21 @@ const Measure = () => {
 
   const errorToastNotExists = () => {
     toast({
-      title: 'その加工指示書は存在しません。',
-      status: 'error',
+      title: "その加工指示書は存在しません。",
+      status: "error",
       duration: 2000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
 
   const errorToast = () => {
     toast({
-      title: '登録が失敗しました。',
-      status: 'error',
+      title: "登録が失敗しました。",
+      status: "error",
       duration: 2000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
 
@@ -157,30 +168,26 @@ const Measure = () => {
     toast({
       title: `No.${serialNumber} 登録が完了しました。`,
       description: `終了時刻:${new Date()}`,
-      status: 'success',
+      status: "success",
       duration: 4000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
 
   return (
-    <Container
-      p={6}
-      w="full"
-      maxW={1200}
-      bg={bg}
-      rounded="md"
-      shadow="md"
-    >
-      <Heading as='h2' fontSize={24}>{title}</Heading>
+    <Container p={6} w="full" maxW={1200} bg={bg} rounded="md" shadow="md">
+      <Heading as="h2" fontSize={24}>
+        {title}
+      </Heading>
       <Flex gap={6} mt={6}>
         <Button
           w="full"
           h={24}
           fontSize={24}
           colorScheme={isActive ? "blue" : "gray"}
-          onClick={() => handleChangeActive(true)}>
+          onClick={() => handleChangeActive(true)}
+        >
           Start
         </Button>
         <Button
@@ -189,12 +196,13 @@ const Measure = () => {
           fontSize={24}
           colorScheme={isActive ? "gray" : "red"}
           onClick={() => handleChangeActive(false)}
-        >End
+        >
+          End
         </Button>
       </Flex>
       <Box mt={12}>
         <Box as="form" onSubmit={handleSubmit}>
-          <Text >{isActive ? "Start" : "End"}</Text>
+          <Text>{isActive ? "Start" : "End"}</Text>
           <Flex mt={1} gap={3} align="center">
             <Input
               ref={inputRef}
