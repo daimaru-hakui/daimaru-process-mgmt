@@ -15,6 +15,7 @@ const TimeToCalc: FC<Props> = ({ prop }) => {
 
   const timeCalc = (time:any) => {
 
+    if(time === 0) return "";
     if (time <= 0) return "失敗";
     const seconds = Math.floor((time / 1000) % 60);
     const minutes = Math.floor((time / 1000 / 60) % 60);
