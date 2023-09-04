@@ -13,8 +13,8 @@ const TimeToCalc: FC<Props> = ({ prop }) => {
     return format(new Date(time), "yyyy年MM月dd日 HH時mm分ss秒");
   };
 
-  const timeCalc = (time:any) => {
-    if(time === 0) return "";
+  const timeCalc = (time: any) => {
+    if (time === 0) return "";
     if (time <= 0) return "失敗";
     const seconds = Math.floor((time / 1000) % 60);
     const minutes = Math.floor((time / 1000 / 60) % 60);
@@ -33,16 +33,16 @@ const TimeToCalc: FC<Props> = ({ prop }) => {
       <Box>
         開始
         <Box as="span" ml={3}>
-          {prop?.start && (
-            formatTime(prop?.start.toDate()))}
+          {prop?.startTime && (
+            formatTime(prop?.startTime.toDate()))}
         </Box>
       </Box>
       <Box>
       </Box>
       終了
       <Box as="span" ml={3}>
-        {prop?.end && (
-          formatTime(prop?.end.toDate()))}
+        {prop?.endTime && (
+          formatTime(prop?.endTime.toDate()))}
       </Box>
       <Box>
       </Box>

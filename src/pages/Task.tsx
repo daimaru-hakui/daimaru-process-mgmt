@@ -13,11 +13,13 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useStore } from "../../store";
+import GanttChart from "../components/ganttChart";
+
 // import PieChart from "../components/PieChart";
 
 
 const Task = () => {
-  const staffs = useStore((state)=>state.staffs)
+  const staffs = useStore((state) => state.staffs);
   const bg = useColorModeValue("white", "gray.700");
   const [task, setTask] = useState<Task>();
   const { id } = useParams();
@@ -43,7 +45,7 @@ const Task = () => {
   if (!task) return;
 
   return (
-    <Container p={6} bg={bg} rounded="md" shadow="md">
+    <Container p={6} bg={bg} rounded="md" shadow="md" maxW={1000}>
       <Flex justify="space-between">
         <Heading as="h2" fontSize="2xl">
           詳細
@@ -87,8 +89,11 @@ const Task = () => {
             <Text fontWeight="bold">コメント</Text>
             <Box ml={1}>{task.comment}</Box>
           </Box>
+          <Box>
+            <Text fontWeight="bold">チャート</Text>
+            <GanttChart task={task} />
+          </Box>
         </Stack>
-        {/* <PieChart task={task}/> */}
       </Box>
     </Container>
   );

@@ -11,21 +11,21 @@ type Props = {
 
 const PieChart: FC<Props> = ({ task }) => {
   const endTime = Math.max(
-    task.pattern.end.toDate(),
-    task.cutting.end.toDate(),
-    task.materials.end.toDate(),
-    task.sewing.end.toDate(),
-    task.finishing.end.toDate(),
-    task.warehouse.end.toDate()
+    task.pattern.endTime.toDate(),
+    task.cutting.endTime.toDate(),
+    task.materials.endTime.toDate(),
+    task.sewing.endTime.toDate(),
+    task.finishing.endTime.toDate(),
+    task.warehouse.endTime.toDate()
   );
   const startTime = +task.createdAt.toDate();
   const totalTime = endTime - startTime;
   const pattern = task.pattern.elapsedTime / totalTime * 100;
   const cutting = task.cutting.elapsedTime / totalTime * 100;
-  const materials = task.materials.elapsedTime/ totalTime * 100;
-  const sewing = task.sewing.elapsedTime/ totalTime * 100;
-  const finishing = task.finishing.elapsedTime/ totalTime * 100;
-  const warehouse = task.warehouse.elapsedTime/ totalTime * 100;
+  const materials = task.materials.elapsedTime / totalTime * 100;
+  const sewing = task.sewing.elapsedTime / totalTime * 100;
+  const finishing = task.finishing.elapsedTime / totalTime * 100;
+  const warehouse = task.warehouse.elapsedTime / totalTime * 100;
 
   const timeCalc = (time: any) => {
     if (time === 0) return "";
