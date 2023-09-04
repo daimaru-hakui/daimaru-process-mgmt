@@ -87,43 +87,43 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         quantity: +data.quantity,
         // reception: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         pattern: {
-          start: "",
-          end: "",
+          startTime: "",
+          endTime: "",
           startCreateUser: "",
           endCreateUser: "",
           elapsedTime: 0,
         },
         cutting: {
-          start: "",
-          end: "",
+          startTime: "",
+          endTime: "",
           startCreateUser: "",
           endCreateUser: "",
           elapsedTime: 0,
         },
         materials: {
-          start: "",
-          end: "",
+          startTime: "",
+          endTime: "",
           startCreateUser: "",
           endCreateUser: "",
           elapsedTime: 0,
         },
         sewing: {
-          start: "",
-          end: "",
+          startTime: "",
+          endTime: "",
           startCreateUser: "",
           endCreateUser: "",
           elapsedTime: 0,
         },
         finishing: {
-          start: "",
-          end: "",
+          startTime: "",
+          endTime: "",
           startCreateUser: "",
           endCreateUser: "",
           elapsedTime: 0,
         },
         warehouse: {
-          start: "",
-          end: "",
+          startTime: "",
+          endTime: "",
           startCreateUser: "",
           endCreateUser: "",
           elapsedTime: 0,
@@ -199,7 +199,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Input
             mt={1}
             {...register("serialNumber", { required: true })}
-            // isDisabled={pageType === "EDIT" ? true : false}
+          // isDisabled={pageType === "EDIT" ? true : false}
           />
           {errors.serialNumber && (
             <Box color="red.400">NO.を入力してください。</Box>

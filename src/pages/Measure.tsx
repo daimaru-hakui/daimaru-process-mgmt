@@ -81,26 +81,26 @@ const Measure = () => {
       console.log(userRef);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        showToast("その加工指示書は存在しません。","error");
+        showToast("その加工指示書は存在しません。", "error");
         throw new Error("シリアルナンバーが見つかりません。");
       }
       const prev = docSnap.data();
-      if (prev[name].start) {
+      if (prev[name].startTime) {
         const result = confirm("上書きしますか");
         if (!result) return;
       }
       await updateDoc(docRef, {
         [name]: {
-          start: new Date(),
-          end: prev[name].end || "",
+          startTime: new Date(),
+          endTime: prev[name].endTime || "",
           startCreateUser: userRef,
           endCreateUser: prev[name].endCreateUser,
           elapsedTime: 0,
         },
       });
-      showToast(`No.${serialNumber} 登録が完了しました。`,"success",4000);
+      showToast(`No.${serialNumber} 登録が完了しました。`, "success", 4000);
     } catch (error) {
-      showToast("登録が失敗しました。","error");
+      showToast("登録が失敗しました。", "error");
     } finally {
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -116,28 +116,28 @@ const Measure = () => {
       const docRef = doc(db, "tasks", serialNumber.trim());
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        showToast("その加工指示書は存在しません。","error");
+        showToast("その加工指示書は存在しません。", "error");
         throw new Error("シリアルナンバーが見つかりません。");
       }
       const prev = docSnap.data();
-      if (prev[name].end) {
+      if (prev[name].endTime) {
         const result = confirm("上書きしますか");
         if (!result) return;
       }
-      const elapsedTime = getElapsedTime(prev[name].start.toDate());
+      const elapsedTime = getElapsedTime(prev[name].startTime.toDate());
 
       await updateDoc(docRef, {
         [name]: {
-          start: prev[name].start || "",
-          end: new Date(),
+          startTime: prev[name].startTime || "",
+          endTime: new Date(),
           startCreateUser: prev[name].startCreateUser,
           endCreateUser: userRef,
           elapsedTime: elapsedTime || 0,
         },
       });
-      showToast(`No.${serialNumber} 登録が完了しました。`,"success",4000);
+      showToast(`No.${serialNumber} 登録が完了しました。`, "success", 4000);
     } catch (error) {
-      showToast("登録が失敗しました。","error");
+      showToast("登録が失敗しました。", "error");
     } finally {
       if (inputRef.current) {
         inputRef.current.value = "";
