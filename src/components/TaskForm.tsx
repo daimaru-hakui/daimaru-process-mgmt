@@ -65,7 +65,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         ...data,
         serialNumber: data.serialNumber.trim(),
         quantity: +data.quantity,
-        reception: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
+        // reception: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         pattern: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         cutting: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         materials: { start: "", end: "", startCreateUser: "", endCreateUser: "" },

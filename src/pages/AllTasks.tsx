@@ -12,32 +12,61 @@ import {
   Flex,
   Button,
   useToast,
-} from '@chakra-ui/react';
-import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { useEffect, useState } from 'react';
-import { Task } from '../../types';
-import TimeToCalc from '../components/TimeToCalc';
-import TaskEdit from '../components/TaskEdit';
-import { Link } from 'react-router-dom';
+} from "@chakra-ui/react";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import { db } from "../../firebase";
+import { useEffect, useState } from "react";
+import { Task } from "../../types";
+import TimeToCalc from "../components/TimeToCalc";
+import TaskEdit from "../components/TaskEdit";
+import { Link } from "react-router-dom";
 import { AiOutlineDelete } from "react-icons/ai";
-
+import { format } from "date-fns";
+import { CSVLink } from "react-csv";
 
 const AllTasks = () => {
   const toast = useToast();
   const [tasks, setTasks] = useState<Task[]>([]);
-  const bg = useColorModeValue('white', 'gray.700');
+  const [csvData, setCsvData] = useState<any[]>([]);
+  const bg = useColorModeValue("white", "gray.700");
   useEffect(() => {
     const getTasks = async () => {
       const q = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
-      onSnapshot(q, (snapshot) => (
-        setTasks(snapshot.docs.map((doc) => (
-          { ...doc.data(), id: doc.id } as Task
-        )))
-      ));
+      onSnapshot(q, (snapshot) =>
+        setTasks(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Task))
+        )
+      );
     };
     getTasks();
   }, []);
+
+  useEffect(() => {
+    const createCSV = () => {
+      setCsvData(
+        tasks.map((task) => ({
+          "No.": task.id,
+          " 加工指示書NO.": task.processNumber,
+          商品名: task.productName,
+          サイズ明細: task.sizeDetails,
+          数量: task.quantity,
+          コメント: task.comment,
+          受付時間: format(
+            new Date(task.createdAt.toDate()),
+            "yyyy年MM月dd日 HH時mm分ss秒"
+          ),
+        }))
+      );
+    };
+    createCSV();
+  }, [tasks]);
 
   const deleteTask = async (id: string) => {
     const result = confirm("削除して宜しいででしょうか");
@@ -54,36 +83,43 @@ const AllTasks = () => {
 
   const successDeleteToast = () => {
     toast({
-      title: '削除しました。',
-      status: 'success',
+      title: "削除しました。",
+      status: "success",
       duration: 2000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
-
 
   const errorDeleteToast = () => {
     toast({
       title: "削除に失敗しました。",
-      status: 'error',
+      status: "error",
       duration: 2000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
-
 
   return (
     <Container p={6} maxW={1800} bg={bg} rounded="md" shadow="md">
       <Flex justify="space-between">
-        <Heading as="h2" fontSize="2xl">タスク一覧</Heading>
-        <Link to="/dashboard/add-task">
-          <Button colorScheme='yellow' color="white">追加</Button>
-        </Link>
+        <Heading as="h2" fontSize="2xl">
+          タスク一覧
+        </Heading>
+        <Flex gap={3}>
+          <CSVLink data={csvData} filename={"加工指示書一覧.csv"}>
+            <Button>CSV</Button>
+          </CSVLink>
+          <Link to="/dashboard/add-task">
+            <Button colorScheme="yellow" color="white">
+              追加
+            </Button>
+          </Link>
+        </Flex>
       </Flex>
       <TableContainer w="full" p={0} mt={6}>
-        <Table variant='simple'>
+        <Table variant="simple">
           <Thead>
             <Tr>
               <Th>NO.</Th>
@@ -114,7 +150,11 @@ const AllTasks = () => {
                 <Td>{task.quantity}</Td>
                 <Td>{task.comment}</Td>
                 <Td>
-                  <TimeToCalc prop={task.reception} />
+                  {format(
+                    new Date(task.createdAt.toDate()),
+                    "yyyy年MM月dd日 HH時mm分ss秒"
+                  )}
+                  {/* <TimeToCalc prop={task.reception} /> */}
                 </Td>
                 <Td>
                   <TimeToCalc prop={task.pattern} />

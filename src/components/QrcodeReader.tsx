@@ -57,7 +57,7 @@ const QrcodeReader: FC<Props> = ({ setSerialNumber }) => {
 
   return (
     <>
-      <Flex mt={12} mb={6} justify="center" display={{ base: "flex", md: "none" }}>
+      <Flex mt={12} mb={6} justify="center" display={{ base: "flex", lg: "none" }}>
         <BsQrCodeScan fontSize={96} cursor="pointer" onClick={onOpen} />
       </Flex>
       <Modal isOpen={isOpen} onClose={() => {
