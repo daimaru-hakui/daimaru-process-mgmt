@@ -11,24 +11,30 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 import {
+  collection,
   doc,
   getDoc,
+  getDocs,
   serverTimestamp,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { db } from "../../firebase";
+import { Staff } from "../../types";
 
 type Inputs = {
   id?: string;
   serialNumber: string;
+  staffId: string;
   processNumber: string;
-  customer: string;
   productName: string;
+  productNumber: string;
+  customer: string;
   sizeDetails: string;
   quantity: number;
   comment: string;
@@ -41,12 +47,14 @@ type Props = {
 };
 
 const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
+  const [staffs, setStaffs] = useState<Staff[]>([]);
   const toast = useToast();
   const {
     register,
     handleSubmit,
     reset,
     setFocus,
+    getValues,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues,
@@ -70,7 +78,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
     try {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        errorToastExists();
+        showToast("この番号はすでに登録済みです", "error");
         throw new Error("この番号はすでに登録済みです");
       }
       await setDoc(docRef, {
@@ -122,10 +130,10 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         },
         createdAt: serverTimestamp(),
       });
-      successNewToast();
+      showToast("登録しました。", "success");
       reset();
     } catch (error) {
-      errorToast();
+      showToast("登録に失敗しました。", "error");
       console.log(error);
     }
   };
@@ -137,6 +145,8 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
       await updateDoc(docRef, {
         serialNumber: data.serialNumber.trim(),
         processNumber: data.processNumber.trim(),
+        staffId: data.staffId,
+        productNumber: data.productNumber.trim(),
         customer: data.customer,
         productName: data.productName,
         sizeDetails: data.sizeDetails,
@@ -144,53 +154,38 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         comment: data.comment,
         updateAt: serverTimestamp(),
       });
-      successUpdateToast();
+      showToast("更新しました。", "success");
       reset();
     } catch (error) {
-      errorToast();
+      showToast("更新に失敗しました。", "error");
       console.log(error);
     }
   };
 
-  const successNewToast = () => {
+  const showToast = (
+    title: string,
+    status: "success" | "error",
+    duration: number = 2000
+  ) => {
     toast({
-      title: "登録しました。",
-      status: "success",
-      duration: 2000,
+      title,
+      status,
+      duration,
       isClosable: true,
       position: "top-right",
     });
   };
 
-  const successUpdateToast = () => {
-    toast({
-      title: "更新しました。",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-      position: "top-right",
-    });
-  };
-
-  const errorToastExists = () => {
-    toast({
-      title: "この番号はすでに登録済みです。",
-      status: "error",
-      duration: 2000,
-      isClosable: true,
-      position: "top-right",
-    });
-  };
-
-  const errorToast = () => {
-    toast({
-      title: "登録に失敗しました。",
-      status: "error",
-      duration: 2000,
-      isClosable: true,
-      position: "top-right",
-    });
-  };
+  useEffect(() => {
+    const getStaffs = async () => {
+      const staffsCollection = collection(db, "staffs");
+      const snapShot = await getDocs(staffsCollection);
+      setStaffs(
+        snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Staff))
+      );
+    };
+    getStaffs();
+  }, []);
 
   useEffect(() => {
     setFocus("serialNumber");
@@ -204,7 +199,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Input
             mt={1}
             {...register("serialNumber", { required: true })}
-            isDisabled={pageType === "EDIT" ? true : false}
+            // isDisabled={pageType === "EDIT" ? true : false}
           />
           {errors.serialNumber && (
             <Box color="red.400">NO.を入力してください。</Box>
@@ -218,10 +213,35 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           )}
         </Box>
         <Box>
+          <Text>担当者</Text>
+          <Select
+            placeholder="担当者"
+            defaultValue={getValues("staffId")}
+            {...register("staffId")}
+          >
+            {staffs.map((staff) => (
+              <option
+                selected={getValues("staffId") === staff.id && true}
+                key={staff.id}
+                value={staff.id}
+              >
+                {staff.name}
+              </option>
+            ))}
+          </Select>
+        </Box>
+        <Box>
           <Text>ユーザー名</Text>
           <Input mt={1} {...register("customer", { required: true })} />
           {errors.customer && (
             <Box color="red.400">ユーザー名を入力してください。</Box>
+          )}
+        </Box>
+        <Box>
+          <Text>品番</Text>
+          <Input mt={1} {...register("productNumber")} />
+          {errors.productName && (
+            <Box color="red.400">商品名を入力してください。</Box>
           )}
         </Box>
         <Box>

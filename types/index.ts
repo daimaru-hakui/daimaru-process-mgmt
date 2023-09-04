@@ -10,7 +10,9 @@ export type User = {
 export type Task = {
   id: string;
   serialNumber: string,
+  staffId:string,
   processNumber: string,
+  productNumber:string,
   customer: string;
   productName: string;
   sizeDetails: string;
@@ -53,3 +55,8 @@ export type Task = {
   };
   createdAt: Timestamp;
 };
+
+export type Staff = {
+  id:string;
+  name:string
+}

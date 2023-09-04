@@ -6,8 +6,9 @@ import Navbar from "../components/Navbar";
 import { Box, Grid } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 import { useStore } from "../../store";
-import { collection, doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs,onSnapshot, setDoc } from "firebase/firestore";
 import { User } from "../../types";
+import { Staff } from "../../types";
 
 const DashboardLayout = () => {
   const isSidebar = useStore((state) => state.isSidebar);
@@ -54,7 +55,17 @@ const DashboardLayout = () => {
     getUsers();
   }, [setUsers]);
 
-
+  const setStaffs = useStore((state) => state.setStaffs);
+  useEffect(() => {
+    const getStaffs = async () => {
+      const staffscol = collection(db, "staffs");
+      const snapShot = await getDocs(staffscol);
+      setStaffs(
+        snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Staff))
+      );
+    };
+    getStaffs();
+  }, [setStaffs]);
 
   return (
     <Grid

@@ -7,7 +7,9 @@ const AddTask = () => {
   const defaultValues = {
     serialNumber: "",
     processNumber: "",
+    staffId:"",
     customer: "",
+    productNumber:"",
     productName: "",
     sizeDetails: "",
     quantity: 0,

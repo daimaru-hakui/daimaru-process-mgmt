@@ -30,12 +30,15 @@ import { Link } from "react-router-dom";
 import { AiOutlineDelete } from "react-icons/ai";
 import { format } from "date-fns";
 import { CSVLink } from "react-csv";
+import { useStore } from "../../store";
 
 const AllTasks = () => {
+  const staffs = useStore((state) => state.staffs);
   const toast = useToast();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [csvData, setCsvData] = useState<any[]>([]);
   const bg = useColorModeValue("white", "gray.700");
+
   useEffect(() => {
     const getTasks = async () => {
       const q = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
@@ -74,31 +77,32 @@ const AllTasks = () => {
     try {
       const docRef = doc(db, "tasks", id);
       await deleteDoc(docRef);
-      successDeleteToast();
+      showToast("削除しました。", "success");
     } catch (error) {
       console.log(error);
-      errorDeleteToast();
+      showToast("削除に失敗しました。", "error");
     }
   };
 
-  const successDeleteToast = () => {
+  const showToast = (
+    title: string,
+    status: "success" | "error",
+    duration: number = 2000
+  ) => {
     toast({
-      title: "削除しました。",
-      status: "success",
-      duration: 2000,
+      title,
+      status,
+      duration,
       isClosable: true,
       position: "top-right",
     });
   };
 
-  const errorDeleteToast = () => {
-    toast({
-      title: "削除に失敗しました。",
-      status: "error",
-      duration: 2000,
-      isClosable: true,
-      position: "top-right",
-    });
+  const getStaffName = (id: string) => {
+    if (!id) return "";
+    const newStaff = staffs.find((staff) => staff.id === id);
+    if (!newStaff) return "";
+    return newStaff.name;
   };
 
   return (
@@ -122,9 +126,12 @@ const AllTasks = () => {
         <Table variant="simple">
           <Thead>
             <Tr>
+              <Th>詳細</Th>
               <Th>NO.</Th>
               <Th>加工指示書No.</Th>
+              <Th>担当者</Th>
               <Th>顧客様名</Th>
+              <Th>品番</Th>
               <Th>商品名</Th>
               <Th>サイズ明細</Th>
               <Th>数量</Th>
@@ -136,15 +143,24 @@ const AllTasks = () => {
               <Th>縫製加工</Th>
               <Th>仕上げ</Th>
               <Th>倉庫入荷</Th>
-              <Th>処理</Th>
+              <Th>編集/削除</Th>
             </Tr>
           </Thead>
           <Tbody>
             {tasks.map((task) => (
               <Tr key={task.id}>
+                <Td>
+                  <Link to={`/dashboard/all-tasks/${task.id}`}>
+                    <Button size="sm" colorScheme="yellow" color="white">
+                      詳細
+                    </Button>
+                  </Link>
+                </Td>
                 <Td>{task.serialNumber}</Td>
                 <Td>{task.processNumber}</Td>
+                <Td>{getStaffName(task.staffId)}</Td>
                 <Td>{task.customer}</Td>
+                <Td>{task?.productNumber}</Td>
                 <Td>{task.productName}</Td>
                 <Td>{task.sizeDetails}</Td>
                 <Td>{task.quantity}</Td>
