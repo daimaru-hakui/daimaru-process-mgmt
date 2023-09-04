@@ -12,15 +12,21 @@ import {
   NumberDecrementStepper,
   useToast,
 } from "@chakra-ui/react";
-import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { db } from "../../firebase";
 
 type Inputs = {
   id?: string;
-  serialNumber: string,
-  processNumber: string,
+  serialNumber: string;
+  processNumber: string;
   customer: string;
   productName: string;
   sizeDetails: string;
@@ -36,11 +42,17 @@ type Props = {
 
 const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
   const toast = useToast();
-  const { register, handleSubmit, reset, setFocus, formState: { errors } } = useForm<Inputs>({
-    defaultValues
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setFocus,
+    formState: { errors },
+  } = useForm<Inputs>({
+    defaultValues,
   });
 
-  const onSubmit: SubmitHandler<Inputs> = data => {
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     switch (pageType) {
       case "NEW":
         addTask(data);
@@ -66,13 +78,49 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         serialNumber: data.serialNumber.trim(),
         quantity: +data.quantity,
         // reception: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
-        pattern: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
-        cutting: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
-        materials: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
-        sewing: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
-        finishing: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
-        warehouse: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
-        createdAt: serverTimestamp()
+        pattern: {
+          start: "",
+          end: "",
+          startCreateUser: "",
+          endCreateUser: "",
+          elapsedTime: 0,
+        },
+        cutting: {
+          start: "",
+          end: "",
+          startCreateUser: "",
+          endCreateUser: "",
+          elapsedTime: 0,
+        },
+        materials: {
+          start: "",
+          end: "",
+          startCreateUser: "",
+          endCreateUser: "",
+          elapsedTime: 0,
+        },
+        sewing: {
+          start: "",
+          end: "",
+          startCreateUser: "",
+          endCreateUser: "",
+          elapsedTime: 0,
+        },
+        finishing: {
+          start: "",
+          end: "",
+          startCreateUser: "",
+          endCreateUser: "",
+          elapsedTime: 0,
+        },
+        warehouse: {
+          start: "",
+          end: "",
+          startCreateUser: "",
+          endCreateUser: "",
+          elapsedTime: 0,
+        },
+        createdAt: serverTimestamp(),
       });
       successNewToast();
       reset();
@@ -94,7 +142,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         sizeDetails: data.sizeDetails,
         quantity: +data.quantity,
         comment: data.comment,
-        updateAt: serverTimestamp()
+        updateAt: serverTimestamp(),
       });
       successUpdateToast();
       reset();
@@ -106,41 +154,41 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
 
   const successNewToast = () => {
     toast({
-      title: '登録しました。',
-      status: 'success',
+      title: "登録しました。",
+      status: "success",
       duration: 2000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
 
   const successUpdateToast = () => {
     toast({
-      title: '更新しました。',
-      status: 'success',
+      title: "更新しました。",
+      status: "success",
       duration: 2000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
 
   const errorToastExists = () => {
     toast({
-      title: 'この番号はすでに登録済みです。',
-      status: 'error',
+      title: "この番号はすでに登録済みです。",
+      status: "error",
       duration: 2000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
 
   const errorToast = () => {
     toast({
-      title: '登録に失敗しました。',
-      status: 'error',
+      title: "登録に失敗しました。",
+      status: "error",
       duration: 2000,
       isClosable: true,
-      position: 'top-right',
+      position: "top-right",
     });
   };
 
@@ -158,38 +206,52 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             {...register("serialNumber", { required: true })}
             isDisabled={pageType === "EDIT" ? true : false}
           />
-          {errors.serialNumber && <Box color="red.400">NO.を入力してください。</Box>}
+          {errors.serialNumber && (
+            <Box color="red.400">NO.を入力してください。</Box>
+          )}
         </Box>
         <Box>
           <Text>加工指示書NO.</Text>
           <Input mt={1} {...register("processNumber")} />
-          {errors.processNumber && <Box color="red.400">加工指示書を入力してください。</Box>}
+          {errors.processNumber && (
+            <Box color="red.400">加工指示書を入力してください。</Box>
+          )}
         </Box>
         <Box>
           <Text>ユーザー名</Text>
           <Input mt={1} {...register("customer", { required: true })} />
-          {errors.customer && <Box color="red.400">ユーザー名を入力してください。</Box>}
+          {errors.customer && (
+            <Box color="red.400">ユーザー名を入力してください。</Box>
+          )}
         </Box>
         <Box>
           <Text>商品名</Text>
           <Input mt={1} {...register("productName", { required: true })} />
-          {errors.productName && <Box color="red.400">商品名を入力してください。</Box>}
+          {errors.productName && (
+            <Box color="red.400">商品名を入力してください。</Box>
+          )}
         </Box>
         <Box>
           <Text>サイズ明細</Text>
           <Input mt={1} {...register("sizeDetails")} />
-          {errors.sizeDetails && <Box color="red.400">商品名を入力してください。</Box>}
+          {errors.sizeDetails && (
+            <Box color="red.400">商品名を入力してください。</Box>
+          )}
         </Box>
         <Box>
           <Text>合計</Text>
           <NumberInput mt={1}>
-            <NumberInputField {...register("quantity", { required: true, min: 1 })} />
+            <NumberInputField
+              {...register("quantity", { required: true, min: 1 })}
+            />
             <NumberInputStepper>
               <NumberIncrementStepper />
               <NumberDecrementStepper />
             </NumberInputStepper>
           </NumberInput>
-          {errors.quantity && <Box color="red.400">数量を入力してください。</Box>}
+          {errors.quantity && (
+            <Box color="red.400">数量を入力してください。</Box>
+          )}
         </Box>
         <Box>
           <Text>備考</Text>

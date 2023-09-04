@@ -81,11 +81,10 @@ const Measure = () => {
       console.log(userRef);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        errorToastNotExists();
+        showToast("その加工指示書は存在しません。","error");
         throw new Error("シリアルナンバーが見つかりません。");
       }
       const prev = docSnap.data();
-      if (!prev) return;
       if (prev[name].start) {
         const result = confirm("上書きしますか");
         if (!result) return;
@@ -96,11 +95,12 @@ const Measure = () => {
           end: prev[name].end || "",
           startCreateUser: userRef,
           endCreateUser: prev[name].endCreateUser,
+          elapsedTime: 0,
         },
       });
-      successToast();
+      showToast(`No.${serialNumber} 登録が完了しました。`,"success",4000);
     } catch (error) {
-      errorToast();
+      showToast("登録が失敗しました。","error");
     } finally {
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -116,26 +116,28 @@ const Measure = () => {
       const docRef = doc(db, "tasks", serialNumber.trim());
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        errorToastNotExists();
+        showToast("その加工指示書は存在しません。","error");
         throw new Error("シリアルナンバーが見つかりません。");
       }
       const prev = docSnap.data();
-      if (!prev) return;
       if (prev[name].end) {
         const result = confirm("上書きしますか");
         if (!result) return;
       }
+      const elapsedTime = getElapsedTime(prev[name].start.toDate());
+
       await updateDoc(docRef, {
         [name]: {
           start: prev[name].start || "",
           end: new Date(),
           startCreateUser: prev[name].startCreateUser,
           endCreateUser: userRef,
+          elapsedTime: elapsedTime || 0,
         },
       });
-      successToast();
+      showToast(`No.${serialNumber} 登録が完了しました。`,"success",4000);
     } catch (error) {
-      errorToast();
+      showToast("登録が失敗しました。","error");
     } finally {
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -144,32 +146,19 @@ const Measure = () => {
     }
   };
 
-  const errorToastNotExists = () => {
-    toast({
-      title: "その加工指示書は存在しません。",
-      status: "error",
-      duration: 2000,
-      isClosable: true,
-      position: "top-right",
-    });
+  const getElapsedTime = (time: number) => {
+    return new Date().getTime() - time;
   };
 
-  const errorToast = () => {
+  const showToast = (
+    title: string,
+    status: "success" | "error",
+    duration: number = 2000
+  ) => {
     toast({
-      title: "登録が失敗しました。",
-      status: "error",
-      duration: 2000,
-      isClosable: true,
-      position: "top-right",
-    });
-  };
-
-  const successToast = () => {
-    toast({
-      title: `No.${serialNumber} 登録が完了しました。`,
-      description: `終了時刻:${new Date()}`,
-      status: "success",
-      duration: 4000,
+      title,
+      status,
+      duration,
       isClosable: true,
       position: "top-right",
     });

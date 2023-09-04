@@ -43,6 +43,7 @@ const QrcodeReader: FC<Props> = ({ setSerialNumber }) => {
         }
         controlsRef.current?.stop();
         controlsRef.current = controls;
+        setReader(controls);
         onClose();
       }
     );
@@ -61,8 +62,8 @@ const QrcodeReader: FC<Props> = ({ setSerialNumber }) => {
         <BsQrCodeScan fontSize={96} cursor="pointer" onClick={onOpen} />
       </Flex>
       <Modal isOpen={isOpen} onClose={() => {
-        onClose();
         resetCodeReader();
+        onClose();
       }}
       >
         <ModalOverlay />
@@ -92,8 +93,8 @@ const QrcodeReader: FC<Props> = ({ setSerialNumber }) => {
             <Button
               variant='ghost'
               onClick={() => {
-                onClose();
                 resetCodeReader();
+                onClose();
               }}>
               閉じる
             </Button>
