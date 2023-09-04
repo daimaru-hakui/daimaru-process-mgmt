@@ -12,10 +12,12 @@ import { Task } from "../../types";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useStore } from "../../store";
 // import PieChart from "../components/PieChart";
 
 
 const Task = () => {
+  const staffs = useStore((state)=>state.staffs)
   const bg = useColorModeValue("white", "gray.700");
   const [task, setTask] = useState<Task>();
   const { id } = useParams();
@@ -29,6 +31,14 @@ const Task = () => {
     if (!id) return;
     getTask(id);
   }, [id]);
+
+  const getStaffName = (id: string) => {
+    if (!id) return "";
+    const newStaff = staffs.find((staff) => staff.id === id);
+    if (!newStaff) return "";
+    return newStaff.name;
+  };
+
 
   if (!task) return;
 
@@ -48,6 +58,10 @@ const Task = () => {
           <Box>
             <Text fontWeight="bold">加工指示書No.</Text>
             <Box ml={1}>{task.processNumber}</Box>
+          </Box>
+          <Box>
+            <Text fontWeight="bold">担当者</Text>
+            <Box ml={1}>{getStaffName(task.staffId)}</Box>
           </Box>
           <Box>
             <Text fontWeight="bold">顧客名</Text>
