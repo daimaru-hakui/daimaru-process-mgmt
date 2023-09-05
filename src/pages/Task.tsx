@@ -15,10 +15,12 @@ import { db } from "../../firebase";
 import { useStore } from "../../store";
 import GanttChart from "../components/gantt/GanttChart";
 import TaskEdit from "../components/TaskEdit";
+import { useUtils } from "../hooks/useUtils";
 
 // import PieChart from "../components/PieChart";
 
 const Task = () => {
+  const { formatTime } = useUtils();
   const staffs = useStore((state) => state.staffs);
   const bg = useColorModeValue("white", "gray.700");
   const [task, setTask] = useState<Task>();
@@ -53,6 +55,14 @@ const Task = () => {
       </Flex>
       <Box mt={6}>
         <Stack spacing={6}>
+          <Box minW={150}>
+            <Text fontWeight="bold" fontSize="sm">
+              作成日
+            </Text>
+            <Box ml={1} minH={6}>
+              {formatTime(task.createdAt.toDate())}
+            </Box>
+          </Box>
           <Flex direction={{ base: "column", lg: "row" }} gap={6}>
             <Box minW={150}>
               <Text fontWeight="bold" fontSize="sm">
