@@ -135,7 +135,6 @@ const AllTasks = () => {
               <Th>商品名</Th>
               <Th>サイズ明細</Th>
               <Th>数量</Th>
-              <Th>コメント</Th>
               <Th>受付時間</Th>
               <Th>パターン準備</Th>
               <Th>裁断</Th>
@@ -164,7 +163,6 @@ const AllTasks = () => {
                 <Td>{task.productName}</Td>
                 <Td>{task.sizeDetails}</Td>
                 <Td>{task.quantity}</Td>
-                <Td>{task.comment}</Td>
                 <Td>
                   {format(
                     new Date(task.createdAt.toDate()),

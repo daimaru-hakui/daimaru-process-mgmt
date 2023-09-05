@@ -12,6 +12,7 @@ import {
   NumberDecrementStepper,
   useToast,
   Select,
+  Flex,
 } from "@chakra-ui/react";
 import {
   collection,
@@ -37,6 +38,8 @@ type Inputs = {
   customer: string;
   sizeDetails: string;
   quantity: number;
+  sp: number;
+  cp: number;
   comment: string;
 };
 
@@ -85,6 +88,8 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         ...data,
         serialNumber: data.serialNumber.trim(),
         quantity: +data.quantity,
+        sp: +data.sp,
+        cp: +data.cp,
         // reception: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         pattern: {
           startTime: "",
@@ -151,6 +156,8 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         productName: data.productName,
         sizeDetails: data.sizeDetails,
         quantity: +data.quantity,
+        sp: +data.sp,
+        cp: +data.cp,
         comment: data.comment,
         updateAt: serverTimestamp(),
       });
@@ -195,11 +202,11 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
     <Box as="form" mt={6} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={6}>
         <Box>
-          <Text>NO.</Text>
+          <Text>NO.<Box as="span" color="red">*</Box></Text>
           <Input
             mt={1}
             {...register("serialNumber", { required: true })}
-          // isDisabled={pageType === "EDIT" ? true : false}
+            // isDisabled={pageType === "EDIT" ? true : false}
           />
           {errors.serialNumber && (
             <Box color="red.400">NO.を入力してください。</Box>
@@ -215,6 +222,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         <Box>
           <Text>担当者</Text>
           <Select
+            mt={1}
             placeholder="担当者"
             defaultValue={getValues("staffId")}
             {...register("staffId")}
@@ -231,7 +239,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           </Select>
         </Box>
         <Box>
-          <Text>ユーザー名</Text>
+          <Text>ユーザー名<Box as="span" color="red">*</Box></Text>
           <Input mt={1} {...register("customer", { required: true })} />
           {errors.customer && (
             <Box color="red.400">ユーザー名を入力してください。</Box>
@@ -240,12 +248,9 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         <Box>
           <Text>品番</Text>
           <Input mt={1} {...register("productNumber")} />
-          {errors.productName && (
-            <Box color="red.400">商品名を入力してください。</Box>
-          )}
         </Box>
         <Box>
-          <Text>商品名</Text>
+          <Text>商品名<Box as="span" color="red">*</Box></Text>
           <Input mt={1} {...register("productName", { required: true })} />
           {errors.productName && (
             <Box color="red.400">商品名を入力してください。</Box>
@@ -259,7 +264,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           )}
         </Box>
         <Box>
-          <Text>合計</Text>
+          <Text>合計<Box as="span" color="red">*</Box></Text>
           <NumberInput mt={1}>
             <NumberInputField
               {...register("quantity", { required: true, min: 1 })}
@@ -273,6 +278,28 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             <Box color="red.400">数量を入力してください。</Box>
           )}
         </Box>
+        <Flex gap={6}>
+          <Box>
+            <Text>SP価格</Text>
+            <NumberInput mt={1}>
+              <NumberInputField {...register("sp")} />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
+          <Box>
+            <Text>CP価格</Text>
+            <NumberInput mt={1}>
+              <NumberInputField {...register("cp")} />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
+        </Flex>
         <Box>
           <Text>備考</Text>
           <Textarea mt={1} {...register("comment")} />

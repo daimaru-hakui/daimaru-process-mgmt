@@ -13,10 +13,10 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useStore } from "../../store";
-import GanttChart from "../components/GanttChart";
+import GanttChart from "../components/gantt/GanttChart";
+import TaskEdit from "../components/TaskEdit";
 
 // import PieChart from "../components/PieChart";
-
 
 const Task = () => {
   const staffs = useStore((state) => state.staffs);
@@ -41,7 +41,6 @@ const Task = () => {
     return newStaff.name;
   };
 
-
   if (!task) return;
 
   return (
@@ -50,50 +49,110 @@ const Task = () => {
         <Heading as="h2" fontSize="2xl">
           詳細
         </Heading>
+        <TaskEdit task={task} />
       </Flex>
       <Box mt={6}>
         <Stack spacing={6}>
+          <Flex direction={{ base: "column", lg: "row" }} gap={6}>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                No.
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.id}
+              </Box>
+            </Box>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                加工指示書No.
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.processNumber}
+              </Box>
+            </Box>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                担当者
+              </Text>
+              <Box ml={1} minH={6}>
+                {getStaffName(task.staffId)}
+              </Box>
+            </Box>
+          </Flex>
+          <Flex direction={{ base: "column", lg: "row" }} gap={6}>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                顧客名
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.customer}
+              </Box>
+            </Box>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                品番
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.productNumber}
+              </Box>
+            </Box>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                商品名
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.productName}
+              </Box>
+            </Box>
+          </Flex>
+          <Flex direction={{ base: "column", lg: "row" }} gap={6}>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                サイズ明細
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.sizeDetails}
+              </Box>
+            </Box>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                数量
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.quantity}
+              </Box>
+            </Box>
+          </Flex>
+          <Flex direction={{ base: "column", lg: "row" }} gap={6}>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                SP価格
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.sp}
+              </Box>
+            </Box>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                CP価格
+              </Text>
+              <Box ml={1} minH={6}>
+                {task.cp}
+              </Box>
+            </Box>
+          </Flex>
           <Box>
-            <Text fontWeight="bold">No.</Text>
-            <Box ml={1}>{task.id}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">加工指示書No.</Text>
-            <Box ml={1}>{task.processNumber}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">担当者</Text>
-            <Box ml={1}>{getStaffName(task.staffId)}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">顧客名</Text>
-            <Box ml={1}>{task.customer}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">品番</Text>
-            <Box ml={1}>{task.productNumber}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">商品名</Text>
-            <Box ml={1}>{task.productName}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">サイズ明細</Text>
-            <Box ml={1}>{task.sizeDetails}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">数量</Text>
-            <Box ml={1}>{task.quantity}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">コメント</Text>
-            <Box ml={1}>{task.comment}</Box>
-          </Box>
-          <Box>
-            <Text fontWeight="bold">チャート</Text>
-            <GanttChart task={task} />
+            <Text fontWeight="bold" fontSize="sm">
+              コメント
+            </Text>
+            <Box ml={1} minH={6}>
+              {task.comment}
+            </Box>
           </Box>
         </Stack>
+        <Box mt={12}>
+          <GanttChart task={task} />
+        </Box>
       </Box>
     </Container>
   );
