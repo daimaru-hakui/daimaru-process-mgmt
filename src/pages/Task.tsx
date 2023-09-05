@@ -34,7 +34,7 @@ const Task = () => {
     };
     if (!id) return;
     getTask(id);
-  }, [id]);
+  }, [id,task]);
 
   const getStaffName = (id: string) => {
     if (!id) return "";
@@ -55,14 +55,25 @@ const Task = () => {
       </Flex>
       <Box mt={6}>
         <Stack spacing={6}>
-          <Box minW={150}>
-            <Text fontWeight="bold" fontSize="sm">
-              作成日
-            </Text>
-            <Box ml={1} minH={6}>
-              {formatTime(task.createdAt.toDate())}
+          <Flex direction={{ base: "column", lg: "row" }} gap={6}>
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                作成日
+              </Text>
+              <Box ml={1} minH={6}>
+                {formatTime(task.createdAt.toDate())}
+              </Box>
             </Box>
-          </Box>
+
+            <Box minW={150}>
+              <Text fontWeight="bold" fontSize="sm">
+                希望納期
+              </Text>
+              <Box ml={1} minH={6}>
+                {task?.salesDay}
+              </Box>
+            </Box>
+          </Flex>
           <Flex direction={{ base: "column", lg: "row" }} gap={6}>
             <Box minW={150}>
               <Text fontWeight="bold" fontSize="sm">

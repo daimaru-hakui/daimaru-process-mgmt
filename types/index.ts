@@ -20,6 +20,7 @@ export type Task = {
   comment: string;
   sp: number;
   cp: number;
+  salesDay:Date | any;
   // reception: {
   //   start: Date | any;
   //   end: Date | any;

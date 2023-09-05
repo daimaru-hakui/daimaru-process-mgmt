@@ -40,6 +40,7 @@ type Inputs = {
   quantity: number;
   sp: number;
   cp: number;
+  salesDay: string;
   comment: string;
 };
 
@@ -158,6 +159,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         quantity: +data.quantity,
         sp: +data.sp,
         cp: +data.cp,
+        salesDay: data.salesDay,
         comment: data.comment,
         updateAt: serverTimestamp(),
       });
@@ -202,7 +204,12 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
     <Box as="form" mt={6} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={6}>
         <Box>
-          <Text>NO.<Box as="span" color="red">*</Box></Text>
+          <Text>
+            NO.
+            <Box as="span" color="red">
+              *
+            </Box>
+          </Text>
           <Input
             mt={1}
             {...register("serialNumber", { required: true })}
@@ -224,7 +231,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Select
             mt={1}
             placeholder="担当者"
-            defaultValue={getValues("staffId")}
+            // defaultValue={getValues("staffId")}
             {...register("staffId")}
           >
             {staffs.map((staff) => (
@@ -239,7 +246,12 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           </Select>
         </Box>
         <Box>
-          <Text>ユーザー名<Box as="span" color="red">*</Box></Text>
+          <Text>
+            ユーザー名
+            <Box as="span" color="red">
+              *
+            </Box>
+          </Text>
           <Input mt={1} {...register("customer", { required: true })} />
           {errors.customer && (
             <Box color="red.400">ユーザー名を入力してください。</Box>
@@ -250,7 +262,12 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Input mt={1} {...register("productNumber")} />
         </Box>
         <Box>
-          <Text>商品名<Box as="span" color="red">*</Box></Text>
+          <Text>
+            商品名
+            <Box as="span" color="red">
+              *
+            </Box>
+          </Text>
           <Input mt={1} {...register("productName", { required: true })} />
           {errors.productName && (
             <Box color="red.400">商品名を入力してください。</Box>
@@ -264,7 +281,12 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           )}
         </Box>
         <Box>
-          <Text>合計<Box as="span" color="red">*</Box></Text>
+          <Text>
+            合計
+            <Box as="span" color="red">
+              *
+            </Box>
+          </Text>
           <NumberInput mt={1}>
             <NumberInputField
               {...register("quantity", { required: true, min: 1 })}
@@ -300,6 +322,10 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             </NumberInput>
           </Box>
         </Flex>
+        <Box>
+          <Text>希望納期</Text>
+          <Input type="date" mt={1} {...register("salesDay")} />
+        </Box>
         <Box>
           <Text>備考</Text>
           <Textarea mt={1} {...register("comment")} />
