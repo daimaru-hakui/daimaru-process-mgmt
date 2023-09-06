@@ -2,6 +2,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { Task } from '../../../types';
 import TaskScheduleEdit from '../task/TaskScheduleEdit';
+import TaskEdit from '../task/TaskEdit';
 
 type Props = {
   task: Task;
@@ -30,7 +31,10 @@ const GanttProductionLabel: FC<Props> = ({ task }) => {
           <Box>数量<Box as="span" ml={1}>{task.quantity}</Box></Box>
         </Flex>
       </Flex>
-      <TaskScheduleEdit task={task} />
+      <Flex direction="column" gap={2}>
+        <TaskScheduleEdit task={task} fontSize={18} />
+        <TaskEdit task={task} fontSize={18} />
+      </Flex>
     </Flex>
   );
 };

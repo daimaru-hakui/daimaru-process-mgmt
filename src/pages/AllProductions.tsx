@@ -70,14 +70,14 @@ const AllProductions = () => {
         left={0}
         bottom={0}
         zIndex={10}
-        bg={bgPrimaryColor}
+        bg={"#051e34"}
         boxShadow="0 0px 5px 3px rgba(0,0,0,0.1)"
       >
         <Box>
-          <Input type="date" name="startDate" value={date.startDate} onChange={handleChangeDate} cursor="pointer" />
+          <Input type="date" name="startDate" value={date.startDate} onChange={handleChangeDate} bg="#e5e5e5" />
         </Box>
         <Box>
-          <Input type="date" name="endDate" value={date.endDate} onChange={handleChangeDate} cursor="pointer" />
+          <Input type="date" name="endDate" value={date.endDate} onChange={handleChangeDate} bg="#e5e5e5" />
         </Box>
       </Flex >
 

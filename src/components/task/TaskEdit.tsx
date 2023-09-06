@@ -16,13 +16,14 @@ import { AiOutlineEdit } from "react-icons/ai";
 
 type Props = {
   task: Task;
+  fontSize?: number;
 };
 
-const TaskEdit: FC<Props> = ({ task }) => {
+const TaskEdit: FC<Props> = ({ task, fontSize = 22 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <AiOutlineEdit cursor="pointer" onClick={onOpen} fontSize={22} />
+      <AiOutlineEdit cursor="pointer" onClick={onOpen} fontSize={fontSize} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

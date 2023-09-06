@@ -17,11 +17,17 @@ const GanttProductionLine: FC<Props> = ({ startPoint, endPoint, startDate, endDa
   const { dateTime } = useUtils();
 
   return (
-    <Box w="full" h={16} position="relative" zIndex={1} borderBottom="1px solid #e5e5e5" overflow="hidden">
+    <Box w="full"
+      h={16}
+      position="relative"
+      zIndex={1}
+      borderBottom="1px solid #e5e5e5"
+      overflow="hidden"
+    >
       <Box
         w={`${offsetWidth}%`}
         h="70%"
-        bg="gray"
+        bg="#FBA1B7"
         position="absolute"
         top="50%"
         left={`${startOffset}%`}
