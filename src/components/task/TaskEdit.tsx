@@ -10,7 +10,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { FC } from "react";
-import { Task } from '../../types';
+import { Task } from '../../../types';
 import TaskForm from './TaskForm';
 import { AiOutlineEdit } from "react-icons/ai";
 

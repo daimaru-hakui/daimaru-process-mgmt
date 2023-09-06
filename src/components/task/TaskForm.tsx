@@ -10,7 +10,6 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  useToast,
   Select,
   Flex,
 } from "@chakra-ui/react";
@@ -25,8 +24,9 @@ import {
 } from "firebase/firestore";
 import { FC, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { db } from "../../firebase";
-import { Staff } from "../../types";
+import { db } from "../../../firebase";
+import { Staff } from "../../../types";
+import { useUtils } from "../../hooks/useUtils";
 
 type Inputs = {
   id?: string;
@@ -52,7 +52,7 @@ type Props = {
 
 const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
   const [staffs, setStaffs] = useState<Staff[]>([]);
-  const toast = useToast();
+  const { showToast } = useUtils();
   const {
     register,
     handleSubmit,
@@ -91,7 +91,6 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         quantity: +data.quantity,
         sp: +data.sp,
         cp: +data.cp,
-        // reception: { start: "", end: "", startCreateUser: "", endCreateUser: "" },
         pattern: {
           startTime: "",
           endTime: "",
@@ -171,20 +170,6 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
     }
   };
 
-  const showToast = (
-    title: string,
-    status: "success" | "error",
-    duration: number = 2000
-  ) => {
-    toast({
-      title,
-      status,
-      duration,
-      isClosable: true,
-      position: "top-right",
-    });
-  };
-
   useEffect(() => {
     const getStaffs = async () => {
       const staffsCollection = collection(db, "staffs");
@@ -213,7 +198,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Input
             mt={1}
             {...register("serialNumber", { required: true })}
-            // isDisabled={pageType === "EDIT" ? true : false}
+          // isDisabled={pageType === "EDIT" ? true : false}
           />
           {errors.serialNumber && (
             <Box color="red.400">NO.を入力してください。</Box>
@@ -231,12 +216,11 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Select
             mt={1}
             placeholder="担当者"
-            // defaultValue={getValues("staffId")}
+            value={getValues("staffId")}
             {...register("staffId")}
           >
             {staffs.map((staff) => (
               <option
-                selected={getValues("staffId") === staff.id && true}
                 key={staff.id}
                 value={staff.id}
               >
@@ -275,7 +259,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         </Box>
         <Box>
           <Text>サイズ明細</Text>
-          <Input mt={1} {...register("sizeDetails")} />
+          <Textarea mt={1}  {...register("sizeDetails")} />
           {errors.sizeDetails && (
             <Box color="red.400">商品名を入力してください。</Box>
           )}

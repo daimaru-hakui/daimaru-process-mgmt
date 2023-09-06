@@ -25,7 +25,7 @@ import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 import { Task } from "../../types";
 import TimeToCalc from "../components/TimeToCalc";
-import TaskEdit from "../components/TaskEdit";
+import TaskEdit from "../components/task/TaskEdit";
 import { Link } from "react-router-dom";
 import { AiOutlineDelete } from "react-icons/ai";
 import { format } from "date-fns";
@@ -147,7 +147,7 @@ const AllTasks = () => {
           </Thead>
           <Tbody>
             {tasks.map((task) => (
-              <Tr key={task.id}>
+              <Tr key={task.id} bg={task.isCompleted ? "gray.50" : "transparent"}>
                 <Td>
                   <Link to={`/dashboard/all-tasks/${task.id}`}>
                     <Button size="sm" colorScheme="yellow" color="white">

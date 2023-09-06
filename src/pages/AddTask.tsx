@@ -1,5 +1,5 @@
 import { Container, Heading, useColorModeValue } from "@chakra-ui/react";
-import TaskForm from "../components/TaskForm";
+import TaskForm from "../components/task/TaskForm";
 
 const AddTask = () => {
   const bg = useColorModeValue("white", "gray.700");
@@ -15,7 +15,10 @@ const AddTask = () => {
     quantity: 0,
     sp: 0,
     cp: 0,
-    salesDay:"",
+    salesDay: "",
+    startDate: "",
+    endDate: "",
+    isCompleted: false,
     comment: "",
   };
 

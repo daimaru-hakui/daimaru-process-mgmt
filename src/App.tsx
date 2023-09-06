@@ -17,6 +17,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import "./index.css";
 import MeasureLaayout from "./pages/MeasureLaayout";
+import AllProductions from "./pages/AllProductions";
 
 function App() {
   const router = createBrowserRouter([
@@ -51,7 +52,7 @@ function App() {
             },
             {
               path: "all-tasks",
-              element:<AllTaskLayout/>,
+              element: <AllTaskLayout />,
               children: [
                 {
                   index: true,
@@ -62,6 +63,10 @@ function App() {
                   element: <Task />,
                 },
               ],
+            },
+            {
+              path: "all-productions",
+              element: <AllProductions />
             },
             {
               path: "add-task",

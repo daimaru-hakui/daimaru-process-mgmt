@@ -2,6 +2,7 @@ import { MdOutlineDashboardCustomize, MdAddTask } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
 import { RiAdminLine } from "react-icons/ri";
 import { TfiTimer } from "react-icons/tfi";
+import { SlCalender } from "react-icons/sl";
 export const headerLinks = [
   {
     path: '/dashboard',
@@ -25,6 +26,11 @@ export const sidebarLinks = [
     path: '/dashboard/add-task',
     name: 'タスク登録',
     icon: <MdAddTask />
+  },
+  {
+    path: '/dashboard/all-productions',
+    name: '生産スケジュール',
+    icon: <SlCalender />
   },
   {
     path: '/dashboard/measure-list',

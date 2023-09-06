@@ -56,7 +56,10 @@ export type Task = {
     endTime: Date | any;
     elapsedTime: 0;
   };
+  startDate: string; 
+  endDate: string; 
   createdAt: Timestamp;
+  isCompleted:boolean
 };
 
 export type Staff = {
