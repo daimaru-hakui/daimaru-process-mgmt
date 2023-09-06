@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { Task } from "../../types";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useStore } from "../../store";
 import GanttChart from "../components/gantt/GanttChart";
@@ -31,11 +31,14 @@ const Task = () => {
     const getTask = async (id: string) => {
       const docRef = doc(db, "tasks", id);
       const docSnap = await getDoc(docRef);
-      setTask({ ...docSnap.data(), id: docSnap.id } as Task);
+      onSnapshot(docRef, (snapShot) => (
+        setTask({ ...snapShot.data(), id: docSnap.id } as Task
+        )
+      ));
     };
     if (!id) return;
     getTask(id);
-  }, [id, task]);
+  }, [id]);
 
   const getStaffName = (id: string) => {
     if (!id) return "";

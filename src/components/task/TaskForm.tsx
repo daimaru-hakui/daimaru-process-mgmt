@@ -58,7 +58,6 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
     handleSubmit,
     reset,
     setFocus,
-    getValues,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues,
@@ -216,10 +215,11 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Select
             mt={1}
             placeholder="担当者"
-            value={getValues("staffId")}
             {...register("staffId")}
+            defaultValue={defaultValues.staffId}
+
           >
-            {staffs.map((staff) => (
+            {staffs?.map((staff) => (
               <option
                 key={staff.id}
                 value={staff.id}
@@ -317,8 +317,8 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         <Button type="submit" colorScheme="yellow" color="white">
           {pageType === "NEW" ? "登録" : "更新"}
         </Button>
-      </Stack>
-    </Box>
+      </Stack >
+    </Box >
   );
 };
 
