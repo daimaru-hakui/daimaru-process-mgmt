@@ -23,3 +23,4 @@ export const useStore = create<Store>((set) => ({
   isSidebar: true,
   toggleSidebar: (payload) => set(() => ({ isSidebar: payload })),
 }));
+
