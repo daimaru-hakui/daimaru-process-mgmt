@@ -123,19 +123,20 @@ const AllTasks = () => {
         </Flex>
       </Flex>
       <TableContainer w="full" p={0} mt={6}>
-        <Table variant="simple">
+        <Table variant="simple" size="sm">
           <Thead>
             <Tr>
               <Th>詳細</Th>
               <Th>NO.</Th>
               <Th>加工指示書No.</Th>
+              <Th>受付時間</Th>
+              <Th>希望納期</Th>
               <Th>担当者</Th>
               <Th>顧客様名</Th>
               <Th>品番</Th>
               <Th>商品名</Th>
               <Th>サイズ明細</Th>
               <Th>数量</Th>
-              <Th>受付時間</Th>
               <Th>パターン準備</Th>
               <Th>裁断</Th>
               <Th>資材準備</Th>
@@ -150,26 +151,27 @@ const AllTasks = () => {
               <Tr key={task.id} bg={task.isCompleted ? "gray.50" : "transparent"}>
                 <Td>
                   <Link to={`/dashboard/all-tasks/${task.id}`}>
-                    <Button size="sm" colorScheme="yellow" color="white">
+                    <Button size="xs" colorScheme="yellow" color="white">
                       詳細
                     </Button>
                   </Link>
                 </Td>
                 <Td>{task.serialNumber}</Td>
                 <Td>{task.processNumber}</Td>
+                <Td>
+                  {format(
+                    new Date(task.createdAt.toDate()),
+                    "yyyy年MM月dd日 HH時mm分ss秒"
+                  )}
+                </Td>
+
+                <Td>{task.salesDay}</Td>
                 <Td>{getStaffName(task.staffId)}</Td>
                 <Td>{task.customer}</Td>
                 <Td>{task?.productNumber}</Td>
                 <Td>{task.productName}</Td>
                 <Td>{task.sizeDetails}</Td>
                 <Td>{task.quantity}</Td>
-                <Td>
-                  {format(
-                    new Date(task.createdAt.toDate()),
-                    "yyyy年MM月dd日 HH時mm分ss秒"
-                  )}
-                  {/* <TimeToCalc prop={task.reception} /> */}
-                </Td>
                 <Td>
                   <TimeToCalc prop={task.pattern} />
                 </Td>

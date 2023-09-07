@@ -70,7 +70,6 @@ const Task = () => {
                   {formatTime(task.createdAt.toDate())}
                 </Box>
               </Box>
-
               <Box minW={150}>
                 <Text fontWeight="bold" fontSize="sm">
                   希望納期
@@ -129,6 +128,32 @@ const Task = () => {
                 </Text>
                 <Box ml={1} minH={6}>
                   {task.productName}
+                </Box>
+              </Box>
+            </Flex>
+            <Flex direction={{ base: "column", lg: "row" }} gap={6}>
+              <Box minW={150}>
+                <Text fontWeight="bold" fontSize="sm">
+                  基準加工賃
+                </Text>
+                <Box ml={1} minH={6}>
+                  {task.standardCmt}円
+                </Box>
+              </Box>
+              <Box minW={150}>
+                <Text fontWeight="bold" fontSize="sm">
+                  数量係数
+                </Text>
+                <Box ml={1} minH={6}>
+                  {task.cmtCoefficient === 0 ? "未入力" : `×${task.cmtCoefficient}`}
+                </Box>
+              </Box>
+              <Box minW={150}>
+                <Text fontWeight="bold" fontSize="sm">
+                  加工賃（CMT）
+                </Text>
+                <Box ml={1} minH={6}>
+                  {task.cmt}円
                 </Box>
               </Box>
             </Flex>

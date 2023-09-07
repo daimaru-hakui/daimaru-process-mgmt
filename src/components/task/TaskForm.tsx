@@ -14,12 +14,8 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import {
-  collection,
   doc,
   getDoc,
-  getDocs,
-  orderBy,
-  query,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -27,7 +23,6 @@ import {
 import { FC, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { db } from "../../../firebase";
-import { Coefficient } from "../../../types";
 import { useUtils } from "../../hooks/useUtils";
 import { useStore } from "../../../store";
 
@@ -41,7 +36,9 @@ type Inputs = {
   customer: string;
   sizeDetails: string;
   quantity: number;
-  coefficient:number;
+  standardCmt: number;
+  cmtCoefficient: number;
+  cmt: number;
   sp: number;
   cp: number;
   salesDay: string;
@@ -56,20 +53,11 @@ type Props = {
 
 const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
   const { showToast } = useUtils();
-  const [coefficients, setCoefficients] = useState<Coefficient[]>([]);
-  const staffs = useStore((state)=> state.staffs)
-
-  useEffect(() => {
-    const getCoefficient = async () => {
-      const coll = collection(db, "coefficients");
-      const q = query(coll,orderBy("order","desc"))
-      const snapShot = await getDocs(q);
-      setCoefficients(
-        snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Coefficient))
-      );
-    };
-    getCoefficient();
-  }, []);
+  const coefficients = useStore((state) => state.coefficients);
+  const staffs = useStore((state) => state.staffs);
+  const [standardCmt, setStandardCmt] = useState(defaultValues.standardCmt);
+  const [cmtCoefficient, setCmtCoefficient] = useState(defaultValues.cmtCoefficient);
+  const [cmt, setCmt] = useState(defaultValues.cmt);
 
   const {
     register,
@@ -105,51 +93,12 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
       await setDoc(docRef, {
         ...data,
         serialNumber: data.serialNumber.trim(),
+        standardCmt: +standardCmt,
+        cmtCoefficient: +cmtCoefficient,
+        cmt: +cmt,
         quantity: +data.quantity,
         sp: +data.sp,
         cp: +data.cp,
-        pattern: {
-          startTime: "",
-          endTime: "",
-          startCreateUser: "",
-          endCreateUser: "",
-          elapsedTime: 0,
-        },
-        cutting: {
-          startTime: "",
-          endTime: "",
-          startCreateUser: "",
-          endCreateUser: "",
-          elapsedTime: 0,
-        },
-        materials: {
-          startTime: "",
-          endTime: "",
-          startCreateUser: "",
-          endCreateUser: "",
-          elapsedTime: 0,
-        },
-        sewing: {
-          startTime: "",
-          endTime: "",
-          startCreateUser: "",
-          endCreateUser: "",
-          elapsedTime: 0,
-        },
-        finishing: {
-          startTime: "",
-          endTime: "",
-          startCreateUser: "",
-          endCreateUser: "",
-          elapsedTime: 0,
-        },
-        warehouse: {
-          startTime: "",
-          endTime: "",
-          startCreateUser: "",
-          endCreateUser: "",
-          elapsedTime: 0,
-        },
         createdAt: serverTimestamp(),
       });
       showToast("登録しました。", "success");
@@ -173,6 +122,9 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         productName: data.productName,
         sizeDetails: data.sizeDetails,
         quantity: +data.quantity,
+        standardCmt: +standardCmt,
+        cmtCoefficient: +cmtCoefficient,
+        cmt: +cmt,
         sp: +data.sp,
         cp: +data.cp,
         salesDay: data.salesDay,
@@ -190,6 +142,8 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
   useEffect(() => {
     setFocus("serialNumber");
   }, [setFocus]);
+
+
 
   return (
     <Box as="form" mt={6} onSubmit={handleSubmit(onSubmit)}>
@@ -295,24 +249,65 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             <Box color="red.400">数量を入力してください。</Box>
           )}
         </Box>
-        <Box>
-          <Text>数量係数</Text>
-          <Select
-            mt={1}
-            placeholder="数量係数"
-            {...register("coefficient")}
-
-          >
-            {coefficients?.map(({id,label,value}) => (
-              <option
-                key={id}
-                value={value}
-              >
-                {label}
-              </option>
-            ))}
-          </Select>
-        </Box>
+        <Flex direction={{ base: "column", lg: "row" }} gap={6}>
+          <Box flex={1}>
+            <Text>
+              基準加工賃
+            </Text>
+            <NumberInput mt={1}
+              value={standardCmt}
+              onChange={(e: string) => {
+                setStandardCmt(+e);
+                setCmt(Math.round(+cmtCoefficient * +e));
+              }}
+            >
+              <NumberInputField
+                {...register("standardCmt", { min: 0 })}
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
+          <Box flex={1}>
+            <Text>数量係数<Box as="span" ml={3}>
+              {`×${cmtCoefficient}`}
+            </Box></Text>
+            <Select
+              mt={1}
+              placeholder="数量係数"
+              {...register("cmtCoefficient")}
+              onChange={(e) => {
+                setCmtCoefficient(+e.target.value);
+                setCmt(Math.round(+standardCmt * +e.target.value));
+              }}
+            >
+              {coefficients?.map(({ id, label, value }) => (
+                <option
+                  key={id}
+                  value={value}
+                >
+                  {label}
+                </option>
+              ))}
+            </Select>
+          </Box>
+          <Box flex={1}>
+            <Text>
+              加工賃（CMT）
+            </Text>
+            <NumberInput mt={1}
+              value={cmt}
+              onChange={(e) => setCmt(+e)}>
+              <NumberInputField  {...register('cmt')} />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </Box>
+        </Flex>
         <Flex gap={6}>
           <Box>
             <Text>SP価格</Text>
@@ -335,7 +330,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             </NumberInput>
           </Box>
         </Flex>
- 
+
         <Box>
           <Text>備考</Text>
           <Textarea mt={1} {...register("comment")} />
@@ -344,7 +339,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           {pageType === "NEW" ? "登録" : "更新"}
         </Button>
       </Stack >
-    </Box >
+    </Box>
   );
 };
 
