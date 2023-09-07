@@ -13,6 +13,7 @@ const AddTask = () => {
     productName: "",
     sizeDetails: "",
     quantity: 0,
+    coefficient: 1,
     sp: 0,
     cp: 0,
     salesDay: "",

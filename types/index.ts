@@ -20,12 +20,9 @@ export type Task = {
   comment: string;
   sp: number;
   cp: number;
-  salesDay:Date | any;
-  // reception: {
-  //   start: Date | any;
-  //   end: Date | any;
-  //   elapsedTime: 0
-  // };
+  salesDay: Date | any;
+  standardCmt: number;
+  coefficient: number;
   pattern: {
     startTime: Date | any;
     endTime: Date | any;
@@ -56,13 +53,20 @@ export type Task = {
     endTime: Date | any;
     elapsedTime: 0;
   };
-  startDate: string; 
-  endDate: string; 
+  startDate: string;
+  endDate: string;
   createdAt: Timestamp;
-  isCompleted:boolean
+  isCompleted: boolean;
 };
 
 export type Staff = {
   id: string;
   name: string;
+};
+
+export type Coefficient = {
+  id: string;
+  label: string;
+  value: number;
+  order: number;
 };

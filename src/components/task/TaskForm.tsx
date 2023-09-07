@@ -18,6 +18,8 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
+  query,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -25,8 +27,9 @@ import {
 import { FC, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { db } from "../../../firebase";
-import { Staff } from "../../../types";
+import { Coefficient } from "../../../types";
 import { useUtils } from "../../hooks/useUtils";
+import { useStore } from "../../../store";
 
 type Inputs = {
   id?: string;
@@ -38,6 +41,7 @@ type Inputs = {
   customer: string;
   sizeDetails: string;
   quantity: number;
+  coefficient:number;
   sp: number;
   cp: number;
   salesDay: string;
@@ -51,8 +55,22 @@ type Props = {
 };
 
 const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
-  const [staffs, setStaffs] = useState<Staff[]>([]);
   const { showToast } = useUtils();
+  const [coefficients, setCoefficients] = useState<Coefficient[]>([]);
+  const staffs = useStore((state)=> state.staffs)
+
+  useEffect(() => {
+    const getCoefficient = async () => {
+      const coll = collection(db, "coefficients");
+      const q = query(coll,orderBy("order","desc"))
+      const snapShot = await getDocs(q);
+      setCoefficients(
+        snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Coefficient))
+      );
+    };
+    getCoefficient();
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -170,17 +188,6 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
   };
 
   useEffect(() => {
-    const getStaffs = async () => {
-      const staffsCollection = collection(db, "staffs");
-      const snapShot = await getDocs(staffsCollection);
-      setStaffs(
-        snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Staff))
-      );
-    };
-    getStaffs();
-  }, []);
-
-  useEffect(() => {
     setFocus("serialNumber");
   }, [setFocus]);
 
@@ -209,6 +216,10 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           {errors.processNumber && (
             <Box color="red.400">加工指示書を入力してください。</Box>
           )}
+        </Box>
+        <Box>
+          <Text>希望納期</Text>
+          <Input type="date" mt={1} {...register("salesDay")} />
         </Box>
         <Box>
           <Text>担当者</Text>
@@ -284,6 +295,24 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             <Box color="red.400">数量を入力してください。</Box>
           )}
         </Box>
+        <Box>
+          <Text>数量係数</Text>
+          <Select
+            mt={1}
+            placeholder="数量係数"
+            {...register("coefficient")}
+
+          >
+            {coefficients?.map(({id,label,value}) => (
+              <option
+                key={id}
+                value={value}
+              >
+                {label}
+              </option>
+            ))}
+          </Select>
+        </Box>
         <Flex gap={6}>
           <Box>
             <Text>SP価格</Text>
@@ -306,10 +335,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             </NumberInput>
           </Box>
         </Flex>
-        <Box>
-          <Text>希望納期</Text>
-          <Input type="date" mt={1} {...register("salesDay")} />
-        </Box>
+ 
         <Box>
           <Text>備考</Text>
           <Textarea mt={1} {...register("comment")} />
