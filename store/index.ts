@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { Staff, User } from "../types";
+import { Coefficient, Staff, User } from "../types";
 import { UserInfo } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
 
 type Store = {
@@ -11,6 +11,8 @@ type Store = {
   setUsers: (payload: User[]) => void;
   staffs: Staff[];
   setStaffs: (paoload: Staff[]) => void;
+  coefficients: Coefficient[];
+  setCoefficients: (payload: Coefficient[]) => void;
   isSidebar: boolean;
   toggleSidebar: (payload: boolean) => void;
 };
@@ -30,6 +32,21 @@ export const useStore = create<Store>((set) => ({
     set(() => ({ staffs: newStaffs }));
   },
   setStaffs: (payload) => set(() => ({ staffs: payload })),
+  coefficients:[],
+  getCoefficient: async () => {
+    try {
+      const coll = collection(db, "coefficients");
+      const q = query(coll, orderBy("order", "desc"));
+      const snapShot = await getDocs(q);
+      const newCoefficients = snapShot.docs.map(
+        (doc) => ({ ...doc.data(), id: doc.id } as Coefficient)
+      );
+      set(() => ({ coefficients: newCoefficients }));
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  setCoefficients: (payload) => set(() => ({ coefficients: payload })),
   isSidebar: true,
   toggleSidebar: (payload) => set(() => ({ isSidebar: payload })),
 }));

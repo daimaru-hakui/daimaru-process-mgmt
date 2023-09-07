@@ -22,7 +22,8 @@ export type Task = {
   cp: number;
   salesDay: Date | any;
   standardCmt: number;
-  coefficient: number;
+  cmtCoefficient: number;
+  cmt:number
   pattern: {
     startTime: Date | any;
     endTime: Date | any;

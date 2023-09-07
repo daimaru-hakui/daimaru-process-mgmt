@@ -6,8 +6,8 @@ import Navbar from "../components/Navbar";
 import { Box, Grid } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 import { useStore } from "../../store";
-import { collection, doc, getDoc, getDocs,onSnapshot, setDoc } from "firebase/firestore";
-import { User } from "../../types";
+import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc } from "firebase/firestore";
+import { Coefficient, User } from "../../types";
 import { Staff } from "../../types";
 
 const DashboardLayout = () => {
@@ -66,6 +66,19 @@ const DashboardLayout = () => {
     };
     getStaffs();
   }, [setStaffs]);
+
+  const setCoefficients = useStore((state) => state.setCoefficients);
+  useEffect(() => {
+    const getCoefficients = async () => {
+      const coll = collection(db, "coefficients");
+      const q = query(coll, orderBy("order", "desc"));
+      const snapShot = await getDocs(q);
+      setCoefficients(
+        snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Coefficient))
+      );
+    };
+    getCoefficients();
+  }, [setCoefficients]);
 
   return (
     <Grid

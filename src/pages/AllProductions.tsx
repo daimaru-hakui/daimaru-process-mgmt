@@ -29,8 +29,8 @@ const AllProductions = () => {
   }
 
   const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const name = e.target.name || currentDate();
+    const value = e.target.value || currentDate();
 
     if (name === "startDate") {
       const start = new Date(value).getTime();
@@ -74,10 +74,10 @@ const AllProductions = () => {
         boxShadow="0 0px 5px 3px rgba(0,0,0,0.1)"
       >
         <Box>
-          <Input type="date" name="startDate" value={date.startDate} onChange={handleChangeDate} bg="#e5e5e5" />
+          <Input type="date" name="startDate" value={date.startDate} onChange={handleChangeDate} bg="#f4f4f4" />
         </Box>
         <Box>
-          <Input type="date" name="endDate" value={date.endDate} onChange={handleChangeDate} bg="#e5e5e5" />
+          <Input type="date" name="endDate" value={date.endDate} onChange={handleChangeDate} bg="#f4f4f4" />
         </Box>
       </Flex >
 
