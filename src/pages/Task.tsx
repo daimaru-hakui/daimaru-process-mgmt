@@ -181,7 +181,7 @@ const Task = () => {
                   SP価格
                 </Text>
                 <Box ml={1} minH={6}>
-                  {task.sp}
+                  {task.sp ? `${task.sp}円`: "未入力"}
                 </Box>
               </Box>
               <Box minW={150}>
@@ -189,7 +189,7 @@ const Task = () => {
                   CP価格
                 </Text>
                 <Box ml={1} minH={6}>
-                  {task.cp}
+                  {task.cp}円
                 </Box>
               </Box>
             </Flex>
