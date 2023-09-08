@@ -145,7 +145,7 @@ const Task = () => {
                   数量係数
                 </Text>
                 <Box ml={1} minH={6}>
-                  {task.cmtCoefficient === 0 ? "未入力" : `×${task.cmtCoefficient}`}
+                  {!task.cmtCoefficient ? "未入力" : `×${task.cmtCoefficient}`}
                 </Box>
               </Box>
               <Box minW={150}>
