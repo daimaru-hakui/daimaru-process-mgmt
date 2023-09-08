@@ -52,12 +52,12 @@ type Props = {
 };
 
 const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
-  const { showToast } = useUtils();
+  const { showToast ,mathRound2nd} = useUtils();
   const coefficients = useStore((state) => state.coefficients);
   const staffs = useStore((state) => state.staffs);
-  const [standardCmt, setStandardCmt] = useState(defaultValues.standardCmt);
+  const [standardCmt, setStandardCmt] = useState<number|string>(defaultValues.standardCmt);
   const [cmtCoefficient, setCmtCoefficient] = useState(defaultValues.cmtCoefficient);
-  const [cmt, setCmt] = useState(defaultValues.cmt);
+  const [cmt, setCmt] = useState<number|string>(defaultValues.cmt);
 
   const {
     register,
@@ -257,8 +257,8 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             <NumberInput mt={1}
               value={standardCmt}
               onChange={(e: string) => {
-                setStandardCmt(+e);
-                setCmt(Math.round(+cmtCoefficient * +e));
+                setStandardCmt(e);
+                setCmt(mathRound2nd(+cmtCoefficient * +e));
               }}
             >
               <NumberInputField
@@ -280,7 +280,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
               {...register("cmtCoefficient")}
               onChange={(e) => {
                 setCmtCoefficient(+e.target.value);
-                setCmt(Math.round(+standardCmt * +e.target.value));
+                setCmt(mathRound2nd(+standardCmt * +e.target.value));
               }}
             >
               {coefficients?.map(({ id, label, value }) => (

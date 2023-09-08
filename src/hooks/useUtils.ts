@@ -70,7 +70,11 @@ export const useUtils = () => {
     }
     return dateList;
   };
+
+  const mathRound2nd = (num: number) => {
+    return Math.round(num * 100) / 100;
+  };
   
 
-  return { showToast, formatTime, timeCalc, totalDayCount, dateTime, dateArray };
+  return { showToast, formatTime, timeCalc, totalDayCount, dateTime, dateArray,mathRound2nd };
 };
