@@ -24,9 +24,9 @@ const TaskSchedule: FC<Props> = ({ task }) => {
         </Box>
         <Box>
           <Text fontWeight="bold" fontSize="sm">完了日</Text>
-          <Box>{task.startDate}</Box>
+          <Box>{task.endDate}</Box>
         </Box>
-        <Box textAlign="center">
+        <Box>
           <Text fontWeight="bold" fontSize="sm">ステータス</Text>
           <Box>{task.isCompleted ? "完了" : "未完了"}</Box>
         </Box>
