@@ -10,7 +10,6 @@ import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc } 
 import { Coefficient, User } from "../../types";
 import { Staff } from "../../types";
 import Loading from "../Loading";
-import SpinnerComponent from "../Spinner";
 
 const DashboardLayout = () => {
   const isSidebar = useStore((state) => state.isSidebar);
@@ -84,9 +83,7 @@ const DashboardLayout = () => {
 
   return (
     <>
-      <Loading>
-        <SpinnerComponent />
-      </Loading>
+      <Loading />
       <Grid
         gridTemplateColumns={{ base: templateColsbase, md: templateColsMd }}
         transition="0.5s"
