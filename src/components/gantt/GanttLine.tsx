@@ -48,7 +48,7 @@ const GanttLine: FC<Props> = ({
       >
         <Flex color="black" gap={6}>
           <Text>Start:{formatTime(startTime.toDate())}</Text>
-          <Text>End:{formatTime(endTime.toDate())}</Text>{" "}
+          <Text>End:{endTime && formatTime(endTime?.toDate())}</Text>{" "}
         </Flex>
       </Flex>
       <Flex
