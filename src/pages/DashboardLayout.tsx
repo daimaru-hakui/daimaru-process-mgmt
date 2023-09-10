@@ -9,6 +9,8 @@ import { useStore } from "../../store";
 import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, setDoc } from "firebase/firestore";
 import { Coefficient, User } from "../../types";
 import { Staff } from "../../types";
+import Loading from "../Loading";
+import SpinnerComponent from "../Spinner";
 
 const DashboardLayout = () => {
   const isSidebar = useStore((state) => state.isSidebar);
@@ -81,19 +83,23 @@ const DashboardLayout = () => {
   }, [setCoefficients]);
 
   return (
-    <Grid
-      // templateColumns="repeat(1,1fr)"
-      gridTemplateColumns={{ base: templateColsbase, md: templateColsMd }}
-      transition="0.5s"
-    >
-      <Sidebar />
-      <Grid as="main" alignContent="start">
-        <Navbar />
-        <Box p={{ base: 6, md: 12 }} w="full" overflow="hidden">
-          <Outlet />
-        </Box>
+    <>
+      <Loading>
+        <SpinnerComponent />
+      </Loading>
+      <Grid
+        gridTemplateColumns={{ base: templateColsbase, md: templateColsMd }}
+        transition="0.5s"
+      >
+        <Sidebar />
+        <Grid as="main" alignContent="start">
+          <Navbar />
+          <Box p={{ base: 6, md: 12 }} w="full" overflow="hidden">
+            <Outlet />
+          </Box>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

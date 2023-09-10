@@ -71,3 +71,12 @@ export type Coefficient = {
   value: number;
   order: number;
 };
+
+export type Comment = {
+  id: string,
+  content: string;
+  processName: string;
+  createUser: string;
+  createdAt: any;
+  images: { url: string, path: string; }[];
+};

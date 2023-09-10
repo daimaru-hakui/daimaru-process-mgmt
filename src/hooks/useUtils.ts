@@ -1,8 +1,11 @@
 import { useToast } from "@chakra-ui/react";
 import { format } from "date-fns";
+import { useStore } from "../../store";
 
 export const useUtils = () => {
   const toast = useToast();
+  const staffs = useStore((state)=>state.staffs)
+  const users = useStore((state)=>state.users)
 
   const showToast = (
     title: string,
@@ -74,7 +77,31 @@ export const useUtils = () => {
   const mathRound2nd = (num: number) => {
     return Math.round(num * 100) / 100;
   };
+
+  const getStaffName = (id: string) => {
+    if (!id) return "";
+    const newStaff = staffs.find((staff) => staff.id === id);
+    if (!newStaff) return "";
+    return newStaff.name;
+  };
+
+  const getUserName = (id: string) => {
+    if (!id) return "";
+    const newUser = users.find((user) => user.id === id);
+    if (!newUser) return "";
+    return newUser.username;
+  };
   
 
-  return { showToast, formatTime, timeCalc, totalDayCount, dateTime, dateArray,mathRound2nd };
+  return {
+    showToast,
+    formatTime,
+    timeCalc,
+    totalDayCount,
+    dateTime,
+    dateArray,
+    mathRound2nd,
+    getStaffName,
+    getUserName
+  };
 };

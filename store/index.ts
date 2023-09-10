@@ -15,6 +15,8 @@ type Store = {
   setCoefficients: (payload: Coefficient[]) => void;
   isSidebar: boolean;
   toggleSidebar: (payload: boolean) => void;
+  loading: boolean;
+  setLoading: (payload: boolean) => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -49,4 +51,6 @@ export const useStore = create<Store>((set) => ({
   setCoefficients: (payload) => set(() => ({ coefficients: payload })),
   isSidebar: true,
   toggleSidebar: (payload) => set(() => ({ isSidebar: payload })),
+  loading: false,
+  setLoading:(payload) => set(()=>({loading:payload}))
 }));
