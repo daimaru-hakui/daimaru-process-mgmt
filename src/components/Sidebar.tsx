@@ -2,6 +2,7 @@ import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 import { sidebarLinks } from "../utils/Links";
 import { Link, useLocation } from "react-router-dom";
 import { useStore } from "../../store";
+import Logo from "./Logo";
 
 const Sidebar = () => {
   const { pathname } = useLocation();
@@ -21,7 +22,7 @@ const Sidebar = () => {
       transform={isSidebar ? "translateX(0)" : " translateX(-300px)"}
     >
       <Box position="sticky" top={0} left="0">
-        <Flex pl={2} h={12} align="center">大丸白衣</Flex>
+        <Flex pl={2} h={12} align="center"><Logo/></Flex>
         {sidebarLinks.map(({ path, name, icon }) => (
           <Link key={path} to={path}>
             <Flex
