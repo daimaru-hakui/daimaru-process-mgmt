@@ -1,6 +1,6 @@
-import { Box } from '@chakra-ui/react';
-import { FC } from 'react';
-import { useUtils } from '../../hooks/useUtils';
+import { Box } from "@chakra-ui/react";
+import { FC } from "react";
+import { useUtils } from "../../hooks/useUtils";
 
 type Props = {
   startPoint: number;
@@ -9,15 +9,24 @@ type Props = {
   endDate: number;
 };
 
-const GanttProductionLine: FC<Props> = ({ startPoint, endPoint, startDate, endDate }) => {
+const GanttProductionLine: FC<Props> = ({
+  startPoint,
+  endPoint,
+  startDate,
+  endDate,
+}) => {
   const total = endPoint - startPoint;
-  const startOffset = startDate > startPoint ? (startDate - startPoint) / total * 100 : 0;
-  const endOffset = (endDate - startPoint) / total * 100;
-  const offsetWidth = (endOffset - startOffset);
+  const startOffset =
+    startDate > startPoint ? ((startDate - startPoint) / total) * 100 : 0;
+  const endOffset = ((endDate - startPoint) / total) * 100;
+  const offsetWidth = endOffset - startOffset;
+  // const totalWidth = total / 1000 / 60 / 60 / 24;
   const { dateTime } = useUtils();
 
   return (
-    <Box w="full"
+    <Box
+      w="full"
+      // w={`${totalWidth * 20}px`}
       h={16}
       position="relative"
       zIndex={1}
@@ -34,20 +43,10 @@ const GanttProductionLine: FC<Props> = ({ startPoint, endPoint, startDate, endDa
         transform="translateY(-50%)"
         boxShadow="md"
       >
-        <Box
-          color="white"
-          position="absolute"
-          top={0}
-          left={2}
-        >
+        <Box color="white" position="absolute" top={0} left={2}>
           {dateTime(startDate) || ""}
         </Box>
-        <Box
-          color="white"
-          position="absolute"
-          bottom={0}
-          left={2}
-        >
+        <Box color="white" position="absolute" bottom={0} left={2}>
           {dateTime(endDate) || ""}
         </Box>
       </Box>

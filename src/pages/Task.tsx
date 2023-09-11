@@ -25,8 +25,6 @@ const Task = () => {
     getTask(id);
   }, [id]);
 
-
-
   if (!task) return;
 
   return (

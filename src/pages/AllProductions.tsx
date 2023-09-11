@@ -56,7 +56,7 @@ const AllProductions = () => {
   };
 
   return (
-    <Container p={6} mb={16} maxW={1800} bg={bgPrimaryColor} rounded="md" shadow="md">
+    <Container p={6} maxW={1800} bg={bgPrimaryColor} rounded="md" shadow="md">
       <Heading as="h2" fontSize="2xl">生産スケジュール</Heading>
       <Box>
         <GanttProductionChart start={date.startDate} end={date.endDate} />
