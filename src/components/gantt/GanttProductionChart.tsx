@@ -53,7 +53,10 @@ const GanttProductionChart: FC<Props> = ({ start, end }) => {
   }, []);
 
   return (
-    <Box overflow="auto">
+    <Box
+      overflow="auto"
+      h={{ base: "calc(100vh - 15rem)", md: "calc(100vh - 18rem)" }}
+    >
       <Flex
         w="full"
         minW={`${numberOfDays * 30}px`}
@@ -96,7 +99,6 @@ const GanttProductionChart: FC<Props> = ({ start, end }) => {
       <Flex
         w="full"
         minW={`${numberOfDays * 30}px`}
-        h={{ base: "calc(100vh - 19rem)", md: "calc(100vh - 22rem)" }}
       >
         <Box w="300px">
           {tasks.map((task) => (
