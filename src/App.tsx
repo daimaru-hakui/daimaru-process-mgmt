@@ -12,6 +12,7 @@ import {
   MeasureList,
   Task,
   AllTaskLayout,
+  TaskHistories,
 } from "./pages";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -65,12 +66,16 @@ function App() {
               ],
             },
             {
-              path: "all-productions",
-              element: <AllProductions />
-            },
-            {
               path: "add-task",
               element: <AddTask />,
+            },
+            {
+              path: "task-histories",
+              element: <TaskHistories />,
+            },
+            {
+              path: "all-productions",
+              element: <AllProductions />,
             },
             {
               path: "measure-list",

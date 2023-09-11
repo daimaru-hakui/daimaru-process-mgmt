@@ -20,6 +20,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
@@ -41,7 +42,11 @@ const AllTasks = () => {
 
   useEffect(() => {
     const getTasks = async () => {
-      const q = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
+      const q = query(
+        collection(db, "tasks"),
+        orderBy("createdAt", "desc"),
+        where("isCompleted", "==", false)
+      );
       onSnapshot(q, (snapshot) =>
         setTasks(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Task))

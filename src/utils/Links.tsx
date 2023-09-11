@@ -1,4 +1,4 @@
-import { MdOutlineDashboardCustomize, MdAddTask } from "react-icons/md";
+import { MdOutlineDashboardCustomize, MdAddTask,MdHistory } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
 import { RiAdminLine } from "react-icons/ri";
 import { TfiTimer } from "react-icons/tfi";
@@ -18,14 +18,19 @@ export const sidebarLinks = [
     icon: <MdOutlineDashboardCustomize />
   },
   {
+    path: '/dashboard/add-task',
+    name: 'タスク登録',
+    icon: <MdAddTask />
+  },
+  {
     path: '/dashboard/all-tasks',
     name: 'タスク一覧',
     icon: <FaTasks />
   },
   {
-    path: '/dashboard/add-task',
-    name: 'タスク登録',
-    icon: <MdAddTask />
+    path: '/dashboard/task-histories',
+    name: 'タスク完了履歴',
+    icon: <MdHistory />
   },
   {
     path: '/dashboard/all-productions',
