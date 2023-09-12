@@ -52,12 +52,16 @@ type Props = {
 };
 
 const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
-  const { showToast ,mathRound2nd} = useUtils();
+  const { showToast, mathRound2nd } = useUtils();
   const coefficients = useStore((state) => state.coefficients);
   const staffs = useStore((state) => state.staffs);
-  const [standardCmt, setStandardCmt] = useState<number|string>(defaultValues.standardCmt);
-  const [cmtCoefficient, setCmtCoefficient] = useState(defaultValues.cmtCoefficient);
-  const [cmt, setCmt] = useState<number|string>(defaultValues.cmt);
+  const [standardCmt, setStandardCmt] = useState<number | string>(
+    defaultValues.standardCmt
+  );
+  const [cmtCoefficient, setCmtCoefficient] = useState(
+    defaultValues.cmtCoefficient
+  );
+  const [cmt, setCmt] = useState<number | string>(defaultValues.cmt);
 
   const {
     register,
@@ -139,14 +143,27 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") e.preventDefault();
+  };
+
+  const handleEnterSerialToProcess = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.code === "Enter") setFocus("processNumber");
+  };
+
   useEffect(() => {
     setFocus("serialNumber");
   }, [setFocus]);
 
-
-
   return (
-    <Box as="form" mt={6} onSubmit={handleSubmit(onSubmit)}>
+    <Box
+      as="form"
+      mt={6}
+      onSubmit={handleSubmit(onSubmit)}
+      onKeyDown={handleKeyDown}
+    >
       <Stack spacing={6}>
         <Box>
           <Text>
@@ -158,7 +175,8 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Input
             mt={1}
             {...register("serialNumber", { required: true })}
-          // isDisabled={pageType === "EDIT" ? true : false}
+            isDisabled={pageType === "EDIT" ? true : false}
+            onKeyDown={handleEnterSerialToProcess}
           />
           {errors.serialNumber && (
             <Box color="red.400">NO.を入力してください。</Box>
@@ -182,13 +200,9 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             placeholder="担当者"
             {...register("staffId")}
             defaultValue={defaultValues.staffId}
-
           >
             {staffs?.map((staff) => (
-              <option
-                key={staff.id}
-                value={staff.id}
-              >
+              <option key={staff.id} value={staff.id}>
                 {staff.name}
               </option>
             ))}
@@ -224,7 +238,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         </Box>
         <Box>
           <Text>サイズ明細</Text>
-          <Textarea mt={1}  {...register("sizeDetails")} />
+          <Textarea mt={1} {...register("sizeDetails")} />
           {errors.sizeDetails && (
             <Box color="red.400">商品名を入力してください。</Box>
           )}
@@ -251,19 +265,16 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         </Box>
         <Flex direction={{ base: "column", lg: "row" }} gap={6}>
           <Box flex={1}>
-            <Text>
-              基準加工賃
-            </Text>
-            <NumberInput mt={1}
+            <Text>基準加工賃</Text>
+            <NumberInput
+              mt={1}
               value={standardCmt}
               onChange={(e: string) => {
                 setStandardCmt(e);
                 setCmt(mathRound2nd(+cmtCoefficient * +e));
               }}
             >
-              <NumberInputField
-                {...register("standardCmt", { min: 0 })}
-              />
+              <NumberInputField {...register("standardCmt", { min: 0 })} />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
@@ -271,9 +282,12 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
             </NumberInput>
           </Box>
           <Box flex={1}>
-            <Text>数量係数<Box as="span" ml={3}>
-              {`×${cmtCoefficient}`}
-            </Box></Text>
+            <Text>
+              数量係数
+              <Box as="span" ml={3}>
+                {`×${cmtCoefficient}`}
+              </Box>
+            </Text>
             <Select
               mt={1}
               placeholder="数量係数"
@@ -284,23 +298,16 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
               }}
             >
               {coefficients?.map(({ id, label, value }) => (
-                <option
-                  key={id}
-                  value={value}
-                >
+                <option key={id} value={value}>
                   {label}
                 </option>
               ))}
             </Select>
           </Box>
           <Box flex={1}>
-            <Text>
-              加工賃（CMT）
-            </Text>
-            <NumberInput mt={1}
-              value={cmt}
-              onChange={(e) => setCmt(+e)}>
-              <NumberInputField  {...register('cmt')} />
+            <Text>加工賃（CMT）</Text>
+            <NumberInput mt={1} value={cmt} onChange={(e) => setCmt(+e)}>
+              <NumberInputField {...register("cmt")} />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
@@ -338,7 +345,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
         <Button type="submit" colorScheme="yellow" color="white">
           {pageType === "NEW" ? "登録" : "更新"}
         </Button>
-      </Stack >
+      </Stack>
     </Box>
   );
 };

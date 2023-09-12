@@ -18,7 +18,6 @@ import {
   deleteDoc,
   doc,
   onSnapshot,
-  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -44,12 +43,13 @@ const AllTasks = () => {
     const getTasks = async () => {
       const q = query(
         collection(db, "tasks"),
-        orderBy("createdAt", "desc"),
         where("isCompleted", "==", false)
       );
       onSnapshot(q, (snapshot) =>
         setTasks(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Task))
+          snapshot.docs
+            .map((doc) => ({ ...doc.data(), id: doc.id } as Task))
+            .sort((a, b) => (+a.id < +b.id ? 1 : -1))
         )
       );
     };
@@ -153,7 +153,10 @@ const AllTasks = () => {
           </Thead>
           <Tbody>
             {tasks.map((task) => (
-              <Tr key={task.id} bg={task.isCompleted ? "gray.50" : "transparent"}>
+              <Tr
+                key={task.id}
+                bg={task.isCompleted ? "gray.50" : "transparent"}
+              >
                 <Td>
                   <Link to={`/dashboard/all-tasks/${task.id}`}>
                     <Button size="xs" colorScheme="yellow" color="white">
@@ -161,7 +164,7 @@ const AllTasks = () => {
                     </Button>
                   </Link>
                 </Td>
-                <Td>{task.serialNumber}</Td>
+                <Td>{task.id}</Td>
                 <Td>{task.processNumber}</Td>
                 <Td>
                   {format(
