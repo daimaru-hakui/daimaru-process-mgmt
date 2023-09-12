@@ -1,8 +1,9 @@
-import { Box, Button, Container, Flex, Input, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Input, Stack, Text } from "@chakra-ui/react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import { useUtils } from "../hooks/useUtils";
 
 type Inputs = {
   email: string,
@@ -11,7 +12,7 @@ type Inputs = {
 
 
 const Login = () => {
-  const toast = useToast();
+  const {showToast} = useUtils()
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = data => {
@@ -21,23 +22,10 @@ const Login = () => {
   const signIn = (data: Inputs) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
-        console.log(userCredential);
-        toast({
-          title: 'ログインに成功しました。',
-          status: 'success',
-          duration: 2000,
-          isClosable: true,
-          position: 'top-right',
-        });
+        showToast(`ログインに成功しました。${userCredential.user.email}`,"success")
         navigate("/dashboard");
       }).catch((error) => {
-        toast({
-          title: 'ログインに失敗しました。',
-          status: 'error',
-          duration: 2000,
-          isClosable: true,
-          position: 'top-right',
-        });
+        showToast(`ログインに失敗しました。`,"success")
         console.log(error);
       });
   };
