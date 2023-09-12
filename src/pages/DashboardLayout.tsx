@@ -23,10 +23,8 @@ const DashboardLayout = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setSession(user);
-        console.log(user);
         addUser(user);
       } else {
-        console.log(user);
         navigate('/login');
       }
     });

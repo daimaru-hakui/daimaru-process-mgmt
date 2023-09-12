@@ -15,6 +15,7 @@ import { db } from "../../firebase";
 import { useStore } from "../../store";
 import QrcodeReader from "../components/QrcodeReader";
 import { useForm, SubmitHandler } from "react-hook-form";
+import ReturnButton from "../components/ReturnButton";
 
 type Inputs = {
   serialNumber: string;
@@ -30,14 +31,13 @@ const Measure = () => {
   const select = pathname.split("/").slice(-2).shift();
   let title = "";
 
-  const { register, handleSubmit, reset, setFocus,setValue } = useForm<Inputs>();
+  const { register, handleSubmit, reset, setFocus, setValue } =
+    useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     if (!name) return;
     select === "start" && updateTaskStart(name, data.serialNumber);
     select === "end" && updateTaskEnd(name, data.serialNumber);
   };
-
-  console.log(select);
 
   switch (name) {
     case "reception":
@@ -151,23 +151,30 @@ const Measure = () => {
   }, [setFocus]);
 
   return (
-    <Container p={6} w="full" maxW={1200} bg={bg} rounded="md" shadow="md">
-      <Heading as="h2" fontSize={24} color= {select === "start" ? "blue" : "red"}>
-        {title}
-        <Box as="span" ml={1}>
-          {select === "start" ? "（開始）" : "（完了）"}
+    <>
+      <Container p={6} w="full" maxW={1200} bg={bg} rounded="md" shadow="md">
+        <Heading
+          as="h2"
+          fontSize={24}
+          color={select === "start" ? "blue" : "red"}
+        >
+          {title}
+          <Box as="span" ml={1}>
+            {select === "start" ? "（開始）" : "（完了）"}
+          </Box>
+        </Heading>
+        <Box mt={6}>
+          <Box as="form" onSubmit={handleSubmit(onSubmit)}>
+            <Flex mt={1} gap={3} align="center">
+              <Input {...register("serialNumber")} />
+              <Button type="submit">送信</Button>
+            </Flex>
+          </Box>
         </Box>
-      </Heading>
-      <Box mt={6}>
-        <Box as="form" onSubmit={handleSubmit(onSubmit)}>
-          <Flex mt={1} gap={3} align="center">
-            <Input {...register("serialNumber")} />
-            <Button type="submit">送信</Button>
-          </Flex>
-        </Box>
-      </Box>
-      <QrcodeReader setValue={setValue} />
-    </Container>
+        <QrcodeReader setValue={setValue} />
+      </Container>
+      <ReturnButton />
+    </>
   );
 };
 export default Measure;
