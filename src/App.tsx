@@ -13,12 +13,13 @@ import {
   Task,
   AllTaskLayout,
   TaskHistories,
+  StartOrEnd,
 } from "./pages";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import "./index.css";
-import MeasureLaayout from "./pages/MeasureLaayout";
 import AllProductions from "./pages/AllProductions";
+import MeasureLayout from "./pages/MeasureLayout";
 
 function App() {
   const router = createBrowserRouter([
@@ -78,18 +79,28 @@ function App() {
               element: <AllProductions />,
             },
             {
-              path: "measure-list",
-              element: <MeasureLaayout />,
-              children: [
+              path: "select",
+              element: <MeasureLayout />,
+              children:[
                 {
-                  index: true,
-                  element: <MeasureList />,
+                  index:true,
+                  element: <StartOrEnd />
                 },
                 {
-                  path: ":slug",
-                  element: <Measure />,
-                },
-              ],
+                  path:":slug",
+                  element:  <MeasureLayout />,
+                  children:[
+                    {
+                      index:true,
+                      element:<MeasureList />
+                    },
+                    {
+                      path: ":slug",
+                      element: <Measure />,
+                    },
+                  ]
+                }
+              ]
             },
           ],
         },

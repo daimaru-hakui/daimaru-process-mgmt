@@ -12,13 +12,18 @@ import {
 } from "@chakra-ui/react";
 import { BrowserMultiFormatReader, IScannerControls } from "@zxing/browser";
 import { FC, useRef, useState } from "react";
+import { UseFormSetValue } from "react-hook-form";
 import { BsQrCodeScan } from "react-icons/bs";
 
-type Props = {
-  setSerialNumber: (value: string) => void;
+type Inputs = {
+  serialNumber: string;
 };
 
-const QrcodeReader: FC<Props> = ({ setSerialNumber }) => {
+type Props = {
+  setValue: UseFormSetValue<Inputs>;
+};
+
+const QrcodeReader: FC<Props> = ({  setValue }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const controlsRef = useRef<IScannerControls | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,7 +44,7 @@ const QrcodeReader: FC<Props> = ({ setSerialNumber }) => {
         }
         if (result) {
           console.log(result.getText());
-          setSerialNumber(result.getText());
+          setValue("serialNumber", result.getText());
         }
         controlsRef.current?.stop();
         controlsRef.current = controls;
@@ -58,13 +63,20 @@ const QrcodeReader: FC<Props> = ({ setSerialNumber }) => {
 
   return (
     <>
-      <Flex mt={12} mb={6} justify="center" display={{ base: "flex", lg: "none" }}>
+      <Flex
+        mt={12}
+        mb={6}
+        justify="center"
+        display={{ base: "flex", lg: "none" }}
+      >
         <BsQrCodeScan fontSize={96} cursor="pointer" onClick={onOpen} />
       </Flex>
-      <Modal isOpen={isOpen} onClose={() => {
-        resetCodeReader();
-        onClose();
-      }}
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          resetCodeReader();
+          onClose();
+        }}
       >
         <ModalOverlay />
         <ModalContent>
@@ -91,11 +103,12 @@ const QrcodeReader: FC<Props> = ({ setSerialNumber }) => {
 
           <ModalFooter>
             <Button
-              variant='ghost'
+              variant="ghost"
               onClick={() => {
                 resetCodeReader();
                 onClose();
-              }}>
+              }}
+            >
               閉じる
             </Button>
           </ModalFooter>

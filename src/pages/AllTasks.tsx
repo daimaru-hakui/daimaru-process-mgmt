@@ -114,7 +114,7 @@ const AllTasks = () => {
     <Container p={6} maxW={1800} bg={bg} rounded="md" shadow="md">
       <Flex justify="space-between">
         <Heading as="h2" fontSize="2xl">
-          タスク一覧
+          加工指示書一覧
         </Heading>
         <Flex gap={3}>
           <CSVLink data={csvData} filename={"加工指示書一覧.csv"}>

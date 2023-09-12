@@ -19,17 +19,17 @@ export const sidebarLinks = [
   },
   {
     path: '/dashboard/add-task',
-    name: 'タスク登録',
+    name: '加工指示書登録',
     icon: <MdAddTask />
   },
   {
     path: '/dashboard/all-tasks',
-    name: 'タスク一覧',
+    name: '加工指示書一覧',
     icon: <FaTasks />
   },
   {
     path: '/dashboard/task-histories',
-    name: 'タスク完了履歴',
+    name: '加工指示書完了履歴',
     icon: <MdHistory />
   },
   {
@@ -38,8 +38,8 @@ export const sidebarLinks = [
     icon: <SlCalender />
   },
   {
-    path: '/dashboard/measure-list',
-    name: '時間計測',
+    path: '/dashboard/select',
+    name: '進捗登録',
     icon: <TfiTimer />
   },
   {

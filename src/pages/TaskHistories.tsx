@@ -83,7 +83,7 @@ import {
       <Container p={6} maxW={1800} bg={bg} rounded="md" shadow="md">
         <Flex justify="space-between">
           <Heading as="h2" fontSize="2xl">
-            タスク完了履歴
+            加工指示書完了履歴
           </Heading>
           <Flex gap={3}>
             <CSVLink data={csvData} filename={"加工指示書一覧.csv"}>

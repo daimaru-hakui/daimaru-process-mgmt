@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-const MeasureLaayout = () => {
+const MeasureLayout = () => {
   return (
     <>
       <Outlet />
@@ -8,4 +8,4 @@ const MeasureLaayout = () => {
   );
 };
 
-export default MeasureLaayout;
+export default MeasureLayout;

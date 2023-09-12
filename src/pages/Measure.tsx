@@ -5,33 +5,39 @@ import {
   Flex,
   Heading,
   Input,
-  Text,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { useState, useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from "../../firebase";
 import { useStore } from "../../store";
 import QrcodeReader from "../components/QrcodeReader";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+  serialNumber: string;
+};
 
 const Measure = () => {
   const session = useStore((state) => state.session);
   const currentUser = session?.uid;
   const toast = useToast();
   const bg = useColorModeValue("white", "gray.700");
-  const [isActive, setIsActive] = useState(true);
-  const [serialNumber, setSerialNumber] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
   const { pathname } = useLocation();
   const name = pathname.split("/").pop();
+  const select = pathname.split("/").slice(-2).shift();
   let title = "";
 
-  useEffect(() => {
-    if (!inputRef.current) return;
-    inputRef.current.focus();
-  }, [isActive]);
+  const { register, handleSubmit, reset, setFocus,setValue } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    if (!name) return;
+    select === "start" && updateTaskStart(name, data.serialNumber);
+    select === "end" && updateTaskEnd(name, data.serialNumber);
+  };
+
+  console.log(select);
 
   switch (name) {
     case "reception":
@@ -56,29 +62,11 @@ const Measure = () => {
       title = "倉庫入荷";
   }
 
-  const handleChangeActive = (bool: boolean) => {
-    setIsActive(bool);
-    if (!inputRef.current) return;
-    inputRef.current.focus();
-  };
-
-  const handleChangeSerialNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSerialNumber(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (!name) return;
-    isActive && updateTaskStart(name);
-    !isActive && updateTaskEnd(name);
-  };
-
-  const updateTaskStart = async (name: string) => {
+  const updateTaskStart = async (name: string, serialNumber: string) => {
     try {
       if (!currentUser) return;
       const userRef = doc(db, "users", currentUser);
       const docRef = doc(db, "tasks", serialNumber.trim());
-      console.log(userRef);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         showToast("その加工指示書は存在しません。", "error");
@@ -102,14 +90,11 @@ const Measure = () => {
     } catch (error) {
       showToast("登録が失敗しました。", "error");
     } finally {
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
-      setSerialNumber("");
+      reset();
     }
   };
 
-  const updateTaskEnd = async (name: string) => {
+  const updateTaskEnd = async (name: string, serialNumber: string) => {
     try {
       if (!currentUser) return;
       const userRef = doc(db, "users", currentUser);
@@ -139,10 +124,7 @@ const Measure = () => {
     } catch (error) {
       showToast("登録が失敗しました。", "error");
     } finally {
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
-      setSerialNumber("");
+      reset();
     }
   };
 
@@ -164,45 +146,27 @@ const Measure = () => {
     });
   };
 
+  useEffect(() => {
+    setFocus("serialNumber");
+  }, [setFocus]);
+
   return (
     <Container p={6} w="full" maxW={1200} bg={bg} rounded="md" shadow="md">
-      <Heading as="h2" fontSize={24}>
+      <Heading as="h2" fontSize={24} color= {select === "start" ? "blue" : "red"}>
         {title}
+        <Box as="span" ml={1}>
+          {select === "start" ? "（開始）" : "（完了）"}
+        </Box>
       </Heading>
-      <Flex gap={6} mt={6}>
-        <Button
-          w="full"
-          h={24}
-          fontSize={24}
-          colorScheme={isActive ? "blue" : "gray"}
-          onClick={() => handleChangeActive(true)}
-        >
-          Start
-        </Button>
-        <Button
-          w="full"
-          h={24}
-          fontSize={24}
-          colorScheme={isActive ? "gray" : "red"}
-          onClick={() => handleChangeActive(false)}
-        >
-          End
-        </Button>
-      </Flex>
-      <Box mt={12}>
-        <Box as="form" onSubmit={handleSubmit}>
-          <Text>{isActive ? "Start" : "End"}</Text>
+      <Box mt={6}>
+        <Box as="form" onSubmit={handleSubmit(onSubmit)}>
           <Flex mt={1} gap={3} align="center">
-            <Input
-              ref={inputRef}
-              value={serialNumber}
-              onChange={handleChangeSerialNumber}
-            />
+            <Input {...register("serialNumber")} />
             <Button type="submit">送信</Button>
           </Flex>
         </Box>
       </Box>
-      <QrcodeReader setSerialNumber={setSerialNumber} />
+      <QrcodeReader setValue={setValue} />
     </Container>
   );
 };
