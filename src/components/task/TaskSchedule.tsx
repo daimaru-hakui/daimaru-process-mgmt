@@ -31,7 +31,6 @@ const TaskSchedule: FC<Props> = ({ task }) => {
           <Box>{task.isCompleted ? "完了" : "未完了"}</Box>
         </Box>
       </Flex>
-
     </Container>
   );
 };
