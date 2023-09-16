@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { FC } from "react";
+import { FC, memo } from "react";
 import { useUtils } from "../../hooks/useUtils";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   endDate: number;
 };
 
-const GanttProductionLine: FC<Props> = ({
+const GanttProductionLine: FC<Props> = memo(({
   startPoint,
   endPoint,
   startDate,
@@ -52,6 +52,6 @@ const GanttProductionLine: FC<Props> = ({
       </Box>
     </Box>
   );
-};
+});
 
 export default GanttProductionLine;

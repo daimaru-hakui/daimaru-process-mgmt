@@ -17,6 +17,16 @@ type Store = {
   toggleSidebar: (payload: boolean) => void;
   loading: boolean;
   setLoading: (payload: boolean) => void;
+  searchText: string;
+  setSearchText: (payload: string) => void;
+  searchStaff: string;
+  setSearchStaff: (payload: string) => void;
+  searchDate: {
+    startDate: string;
+    endDate: string;
+  };
+  setSearchDate: (value: string, name: string) => void;
+  resetSearchDate: () => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -34,7 +44,7 @@ export const useStore = create<Store>((set) => ({
     set(() => ({ staffs: newStaffs }));
   },
   setStaffs: (payload) => set(() => ({ staffs: payload })),
-  coefficients:[],
+  coefficients: [],
   getCoefficient: async () => {
     try {
       const coll = collection(db, "coefficients");
@@ -45,12 +55,30 @@ export const useStore = create<Store>((set) => ({
       );
       set(() => ({ coefficients: newCoefficients }));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   setCoefficients: (payload) => set(() => ({ coefficients: payload })),
   isSidebar: true,
   toggleSidebar: (payload) => set(() => ({ isSidebar: payload })),
   loading: false,
-  setLoading:(payload) => set(()=>({loading:payload}))
+  setLoading: (payload) => set(() => ({ loading: payload })),
+
+  searchText: "",
+  setSearchText: (payload) => set({ searchText: payload }),
+  searchStaff: "",
+  setSearchStaff: (payload) => set({ searchStaff: payload }),
+  searchDate: {
+    startDate: "",
+    endDate: "",
+  },
+  setSearchDate: (value, name) => set((state) => ({
+    searchDate: { ...state.searchDate, [name]: value }
+  })),
+  resetSearchDate: () => set({
+    searchDate: {
+      startDate: "",
+      endDate: "",
+    }
+  }),
 }));
