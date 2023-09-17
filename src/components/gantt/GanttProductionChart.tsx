@@ -24,7 +24,7 @@ const GanttProductionChart: FC<Props> = ({ start, end }) => {
   const startPoint = new Date(start).getTime();
   const endPoint = new Date(end).getTime();
   const [numberOfDays, setNumberOfDays] = useState(0);
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[] | null>(null);
   const { dateArray } = useUtils();
   const dateList = dateArray(start, end);
 
@@ -52,6 +52,8 @@ const GanttProductionChart: FC<Props> = ({ start, end }) => {
     };
     getTasks();
   }, []);
+
+  if (!tasks) return;
 
   return (
     <Box
