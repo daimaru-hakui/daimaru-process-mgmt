@@ -5,6 +5,7 @@ import { Task } from '../../../types';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { useUtils } from '../../hooks/useUtils';
+import { useColors } from '../../hooks/useColors';
 
 type Props = {
   task: Task;
@@ -13,6 +14,7 @@ type Props = {
 
 const TaskScheduleEdit: FC<Props> = ({ task, fontSize = 22 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
   const [date, setDate] = useState({ startDate: task.startDate, endDate: task.endDate });
   const [status, setStatus] = useState(task.isCompleted);
   const { showToast } = useUtils();
@@ -69,7 +71,7 @@ const TaskScheduleEdit: FC<Props> = ({ task, fontSize = 22 }) => {
       <MdSchedule cursor="pointer" onClick={onOpen} fontSize={fontSize} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={bgPrimaryColor}>
           <ModalHeader>編集</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -98,7 +100,7 @@ const TaskScheduleEdit: FC<Props> = ({ task, fontSize = 22 }) => {
               mt={12}
               w="full"
               colorScheme='yellow'
-              color="white"
+              color={btnTextPrimaryColor}
               onClick={() => updateTaskSchedule(task.id)}
             >
               更新

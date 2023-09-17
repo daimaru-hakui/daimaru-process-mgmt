@@ -13,6 +13,7 @@ import { FC } from "react";
 import { Task } from '../../../types';
 import TaskForm from './TaskForm';
 import { AiOutlineEdit } from "react-icons/ai";
+import { useColors } from '../../hooks/useColors';
 
 type Props = {
   task: Task;
@@ -21,12 +22,13 @@ type Props = {
 
 const TaskEdit: FC<Props> = ({ task, fontSize = 22 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bgPrimaryColor } = useColors();
   return (
     <>
       <AiOutlineEdit cursor="pointer" onClick={onOpen} fontSize={fontSize} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={bgPrimaryColor}>
           <ModalHeader>編集</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

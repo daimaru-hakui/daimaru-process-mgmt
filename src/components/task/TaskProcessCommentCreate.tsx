@@ -1,6 +1,7 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import TaskProcessCommentForm from './TaskProcessCommentForm';
 import { FC } from 'react';
+import { useColors } from '../../hooks/useColors';
 
 type Props = {
   taskId: string;
@@ -8,6 +9,7 @@ type Props = {
 
 const TaskProcessCommentCreate: FC<Props> = ({ taskId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
 
   const defaultValues = {
     id: "",
@@ -19,10 +21,10 @@ const TaskProcessCommentCreate: FC<Props> = ({ taskId }) => {
 
   return (
     <>
-      <Button colorScheme='yellow' color='white' onClick={onOpen}>コメント</Button>
+      <Button colorScheme='yellow' color={btnTextPrimaryColor} onClick={onOpen}>コメント</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={bgPrimaryColor}>
           <ModalHeader>コメント</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

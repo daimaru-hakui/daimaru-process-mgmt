@@ -1,4 +1,4 @@
-import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import GanttProductionLine from "./GanttProductionLine";
 import { FC, useEffect, useState } from "react";
 import {
@@ -12,6 +12,7 @@ import { db } from "../../../firebase";
 import { Task } from "../../../types";
 import GanttProductionLabel from "./GanttProductionLabel";
 import { useUtils } from "../../hooks/useUtils";
+import { useColors } from "../../hooks/useColors";
 
 type Props = {
   start: string;
@@ -19,7 +20,7 @@ type Props = {
 };
 
 const GanttProductionChart: FC<Props> = ({ start, end }) => {
-  const bg = useColorModeValue("white", "gray.700");
+  const { bgPrimaryColor } = useColors();
   const startPoint = new Date(start).getTime();
   const endPoint = new Date(end).getTime();
   const [numberOfDays, setNumberOfDays] = useState(0);
@@ -64,7 +65,7 @@ const GanttProductionChart: FC<Props> = ({ start, end }) => {
         position="sticky"
         top={0}
         zIndex={1000}
-        bg={bg}
+        bg={bgPrimaryColor}
       >
         <Box w="300px"></Box>
         <Box w="full" position="relative">
@@ -86,7 +87,7 @@ const GanttProductionChart: FC<Props> = ({ start, end }) => {
               <Box
                 h={6}
                 color={
-                  date.day === 0 ? "red" : date.day === 6 ? "blue" : "black"
+                  date.day === 0 ? "red" : date.day === 6 ? "blue" : ""
                 }
               >
                 {date.date}
