@@ -1,13 +1,6 @@
 import {
   Container,
   Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
   Flex,
   Button,
 } from "@chakra-ui/react";
@@ -21,19 +14,18 @@ import {
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 import { Task } from "../../types";
-import TimeToCalc from "../components/TimeToCalc";
-import TaskEdit from "../components/task/TaskEdit";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { CSVLink } from "react-csv";
-import { useStore } from "../../store";
 import { useColors } from "../hooks/useColors";
+import { useUtils } from "../hooks/useUtils";
+import AllTasksTable from "../components/task/AllTasksTable";
 
 const TaskHistories = () => {
-  const staffs = useStore((state) => state.staffs);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [csvData, setCsvData] = useState<any[]>([]);
-  const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
+  const { bgPrimaryColor } = useColors();
+  const { animationOpacity } = useUtils();
 
   useEffect(() => {
     const getTasks = async () => {
@@ -71,15 +63,8 @@ const TaskHistories = () => {
     createCSV();
   }, [tasks]);
 
-  const getStaffName = (id: string) => {
-    if (!id) return "";
-    const newStaff = staffs.find((staff) => staff.id === id);
-    if (!newStaff) return "";
-    return newStaff.name;
-  };
-
   return (
-    <Container p={6} maxW={1800} bg={bgPrimaryColor} rounded="md" shadow="md">
+    <Container p={6} maxW={1800} bg={bgPrimaryColor} rounded="md" shadow="md" animation={animationOpacity}>
       <Flex justify="space-between">
         <Heading as="h2" fontSize="2xl">
           加工指示書完了履歴
@@ -95,83 +80,7 @@ const TaskHistories = () => {
           </Link>
         </Flex>
       </Flex>
-      <TableContainer w="full" p={0} mt={6}>
-        <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th>詳細</Th>
-              <Th>NO.</Th>
-              <Th>加工指示書No.</Th>
-              <Th>受付時間</Th>
-              <Th>希望納期</Th>
-              <Th>担当者</Th>
-              <Th>顧客様名</Th>
-              <Th>品番</Th>
-              <Th>商品名</Th>
-              <Th>サイズ明細</Th>
-              <Th>数量</Th>
-              <Th>パターン準備</Th>
-              <Th>裁断</Th>
-              <Th>資材準備</Th>
-              <Th>縫製加工</Th>
-              <Th>仕上げ</Th>
-              <Th>倉庫入荷</Th>
-              <Th>編集/削除</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {tasks.map((task) => (
-              <Tr key={task.id}>
-                <Td>
-                  <Link to={`/dashboard/all-tasks/${task.id}`}>
-                    <Button size="xs" colorScheme="yellow" color={btnTextPrimaryColor}>
-                      詳細
-                    </Button>
-                  </Link>
-                </Td>
-                <Td>{task.serialNumber}</Td>
-                <Td>{task.processNumber}</Td>
-                <Td>
-                  {format(
-                    new Date(task.createdAt.toDate()),
-                    "yyyy年MM月dd日 HH時mm分ss秒"
-                  )}
-                </Td>
-                <Td>{task.salesDay}</Td>
-                <Td>{getStaffName(task.staffId)}</Td>
-                <Td>{task.customer}</Td>
-                <Td>{task?.productNumber}</Td>
-                <Td>{task.productName}</Td>
-                <Td>{task.sizeDetails}</Td>
-                <Td>{task.quantity}</Td>
-                <Td>
-                  <TimeToCalc prop={task.pattern} />
-                </Td>
-                <Td>
-                  <TimeToCalc prop={task.cutting} />
-                </Td>
-                <Td>
-                  <TimeToCalc prop={task.materials} />
-                </Td>
-                <Td>
-                  <TimeToCalc prop={task.sewing} />
-                </Td>
-                <Td>
-                  <TimeToCalc prop={task.finishing} />
-                </Td>
-                <Td>
-                  <TimeToCalc prop={task.warehouse} />
-                </Td>
-                <Td>
-                  <Flex gap={4}>
-                    <TaskEdit task={task} />
-                  </Flex>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <AllTasksTable tasks={tasks} />
     </Container>
   );
 };

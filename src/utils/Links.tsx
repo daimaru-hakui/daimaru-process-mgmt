@@ -1,6 +1,6 @@
-import { MdOutlineDashboardCustomize, MdAddTask,MdHistory } from "react-icons/md";
+import { MdOutlineDashboardCustomize, MdAddTask, MdHistory } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
-import { RiAdminLine } from "react-icons/ri";
+// import { RiAdminLine } from "react-icons/ri";
 import { TfiTimer } from "react-icons/tfi";
 import { SlCalender } from "react-icons/sl";
 export const headerLinks = [
@@ -42,10 +42,4 @@ export const sidebarLinks = [
     name: '進捗登録',
     icon: <TfiTimer />
   },
-  {
-    path: '/dashboard/admin',
-    name: '権限管理',
-    icon: <RiAdminLine />
-  },
-
 ];

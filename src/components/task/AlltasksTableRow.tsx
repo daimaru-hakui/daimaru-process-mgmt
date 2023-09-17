@@ -49,7 +49,6 @@ const AlltasksTableRow: FC<Props> = memo(({ task }) => {
   return (
     <Tr
       key={task.id}
-      bg={task.isCompleted ? "gray.50" : "transparent"}
     >
       <Td>
         <Link to={`/dashboard/all-tasks/${task.id}`}>

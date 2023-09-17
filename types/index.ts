@@ -5,6 +5,8 @@ export type User = {
   username: string;
   email: string;
   isAdmin: boolean;
+  isSales: boolean;
+  isTokushima: boolean;
 };
 
 export type Task = {

@@ -7,10 +7,13 @@ import GanttChart from "../components/gantt/GanttChart";
 import TaskSchedule from "../components/task/TaskSchedule";
 import TaskMeasureComment from "../components/task/TaskProcessComment";
 import TaskContent from "../components/task/TaskContent";
+import { useUtils } from "../hooks/useUtils";
+import { Box } from "@chakra-ui/react";
 
 const Task = () => {
   const [task, setTask] = useState<Task>();
   const { id } = useParams();
+  const { animationOpacity } = useUtils();
 
   useEffect(() => {
     const getTask = async (id: string) => {
@@ -28,12 +31,12 @@ const Task = () => {
   if (!task) return;
 
   return (
-    <>
+    <Box animation={animationOpacity}>
       <TaskSchedule task={task} />
       <TaskContent task={task} />
       <GanttChart task={task} />
       <TaskMeasureComment task={task} />
-    </>
+    </Box>
   );
 };
 

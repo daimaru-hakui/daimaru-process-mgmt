@@ -2,10 +2,12 @@ import { Box, Container, Flex, Heading, Input } from '@chakra-ui/react';
 import { useColors } from '../hooks/useColors';
 import GanttProductionChart from '../components/gantt/GanttProductionChart';
 import { useState } from 'react';
+import { useUtils } from '../hooks/useUtils';
 
 const AllProductions = () => {
   const { bgPrimaryColor } = useColors();
   const [date, setDate] = useState({ startDate: currentDate(), endDate: threeMonthsLater() });
+  const { animationOpacity } = useUtils();
 
   function currentDate() {
     const date = new Date();
@@ -56,7 +58,14 @@ const AllProductions = () => {
   };
 
   return (
-    <Container p={6} maxW="full" bg={bgPrimaryColor} rounded="md" shadow="md">
+    <Container
+      p={6}
+      maxW="full"
+      bg={bgPrimaryColor}
+      rounded="md"
+      shadow="md"
+      animation={animationOpacity}
+    >
       <Heading as="h2" fontSize="2xl">生産スケジュール</Heading>
       <Box>
         <GanttProductionChart start={date.startDate} end={date.endDate} />

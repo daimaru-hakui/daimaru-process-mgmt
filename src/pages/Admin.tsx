@@ -51,6 +51,8 @@ const Admin = () => {
               <Th>名前</Th>
               <Th>Email</Th>
               <Th>管理者権限</Th>
+              <Th>徳島工場</Th>
+              <Th>営業部</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -62,6 +64,20 @@ const Admin = () => {
                   <Switch
                     name="isAdmin"
                     defaultChecked={user.isAdmin}
+                    onChange={(e) => handleChangeSwitch(e, user.id)}
+                  />
+                </Td>
+                <Td>
+                  <Switch
+                    name="isTokushima"
+                    defaultChecked={user.isTokushima}
+                    onChange={(e) => handleChangeSwitch(e, user.id)}
+                  />
+                </Td>
+                <Td>
+                  <Switch
+                    name="isSales"
+                    defaultChecked={user.isSales}
                     onChange={(e) => handleChangeSwitch(e, user.id)}
                   />
                 </Td>

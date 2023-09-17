@@ -4,10 +4,13 @@ import { Link, useLocation } from "react-router-dom";
 import { useStore } from "../../store";
 import Logo from "./Logo";
 import { useColors } from "../hooks/useColors";
+import { RiAdminLine } from "react-icons/ri";
 
 const Sidebar = () => {
   const { pathname } = useLocation();
   const isSidebar = useStore((state) => state.isSidebar);
+  const session = useStore((state) => state.session);
+  const email = session?.email;
   const { bgPrimaryColor } = useColors();
   const listColor = useColorModeValue('gray.100', 'gray.700');
 
@@ -41,6 +44,23 @@ const Sidebar = () => {
             </Flex>
           </Link>
         ))}
+        {email === "mukai@daimaru-hakui.co.jp" && (
+          <Link to={'/dashboard/admin'}>
+            <Flex
+              p={1}
+              py={1}
+              my={1}
+              justify="start"
+              align="center"
+              rounded="md"
+              _hover={{ bg: listColor }}
+              bg={pathname === '/dashboard/admin' ? listColor : "transparent"}
+            >
+              <Box><RiAdminLine /></Box>
+              <Box ml={6} >権限管理</Box>
+            </Flex>
+          </Link>
+        )}
       </Box>
     </Box >
   );
