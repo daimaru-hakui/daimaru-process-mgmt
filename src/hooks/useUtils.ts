@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+import { keyframes, useToast } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { useStore } from "../../store";
 
@@ -91,6 +91,12 @@ export const useUtils = () => {
     if (!newUser) return "";
     return newUser.username;
   };
+
+  const animationKeyframes = keyframes`
+  0% { opacity: 0 }
+  100% { opacity:1 }
+`;
+  const animationOpacity = `${animationKeyframes} 0.3s ease-in-out`;
   
 
   return {
@@ -102,6 +108,7 @@ export const useUtils = () => {
     dateArray,
     mathRound2nd,
     getStaffName,
-    getUserName
+    getUserName,
+    animationOpacity
   };
 };

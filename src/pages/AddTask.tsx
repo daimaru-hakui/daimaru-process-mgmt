@@ -1,9 +1,11 @@
 import { Container, Heading } from "@chakra-ui/react";
 import TaskForm from "../components/task/TaskForm";
 import { useColors } from "../hooks/useColors";
+import { useUtils } from "../hooks/useUtils";
 
 const AddTask = () => {
   const { bgPrimaryColor } = useColors();
+  const { animationOpacity } = useUtils();
 
   const defaultValues = {
     serialNumber: "",
@@ -69,7 +71,7 @@ const AddTask = () => {
   };
 
   return (
-    <Container p={6} bg={bgPrimaryColor} rounded="md" shadow="md">
+    <Container p={6} bg={bgPrimaryColor} rounded="md" shadow="md" animation={animationOpacity}>
       <Heading as="h2" fontSize="2xl">
         加工指示書登録
       </Heading>

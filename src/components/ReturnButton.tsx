@@ -9,12 +9,13 @@ const ReturnButton = () => {
     <Link to="/dashboard/select">
       <Flex
         mt={6}
+        mx="auto"
         p={3}
         w="full"
+        maxW={1200}
         justify="center"
         align="center"
         gap={3}
-        color="white"
         bg={bgPrimaryColor}
         fontSize={32}
         rounded="md"
