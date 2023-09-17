@@ -1,10 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import '../index.css';
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
+import { useColors } from '../hooks/useColors';
 const HomeLayout = () => {
-  const bg = useColorModeValue('gray.50', 'gray.800');
+  const { bgSecondaryColor } = useColors();
   return (
-    <Box w="full" minH="100vh" bg={bg}>
+    <Box w="full" minH="100vh" bg={bgSecondaryColor}>
       <Outlet />
     </Box>
   );

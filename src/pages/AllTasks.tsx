@@ -1,7 +1,6 @@
 import {
   Container,
   Heading,
-  useColorModeValue,
   Flex,
   Button,
   Spinner,
@@ -23,6 +22,7 @@ import AllTasksTable from "../components/task/AllTasksTable";
 import AllTasksSearchBar from "../components/task/AllTasksSearchBar";
 import AllTasksSearchDrawer from "../components/task/AllTasksSearchDrawer";
 import { useStore } from "../../store";
+import { useColors } from "../hooks/useColors";
 
 const AllTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -34,7 +34,7 @@ const AllTasks = () => {
   const resetSearchDate = useStore((state) => state.resetSearchDate);
   const [filterTasks, setFilterTasks] = useState<Task[] | null>(null);
   const [csvData, setCsvData] = useState<any[]>([]);
-  const bg = useColorModeValue("white", "gray.700");
+  const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
 
   useEffect(() => {
     const getTasks = async () => {
@@ -113,7 +113,7 @@ const AllTasks = () => {
   }
 
   return (
-    <Container p={6} maxW={1800} bg={bg} rounded="md" shadow="md">
+    <Container p={6} maxW={1800} bg={bgPrimaryColor} rounded="md" shadow="md">
       <Flex justify="space-between">
         <Heading as="h2" fontSize="2xl">
           加工指示書一覧
@@ -123,7 +123,7 @@ const AllTasks = () => {
             <Button>CSV</Button>
           </CSVLink>
           <Link to="/dashboard/add-task">
-            <Button colorScheme="yellow" color="white">
+            <Button colorScheme="yellow" color={btnTextPrimaryColor}>
               追加
             </Button>
           </Link>
@@ -132,7 +132,6 @@ const AllTasks = () => {
       <AllTasksSearchDrawer
         onReset={onReset}
       />
-
       <AllTasksSearchBar
         onReset={onReset}
       />

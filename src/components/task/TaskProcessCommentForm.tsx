@@ -8,6 +8,7 @@ import { useStore } from '../../../store';
 import { PROCESS_LIST } from '../../utils/constants';
 import { useUtils } from '../../hooks/useUtils';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { useColors } from '../../hooks/useColors';
 
 type Props = {
   onClose: () => void;
@@ -31,6 +32,7 @@ const TaskProcessCommentForm: FC<Props> = ({ onClose, defaultValues, pageType })
   const setLoading = useStore((state) => state.setLoading);
   const [fileUpload, setFileUpload] = useState<FileList | File[]>([]);
   const { showToast } = useUtils();
+  const { btnTextPrimaryColor } = useColors();
 
   const handleFileChange = (e: any) => {
     if (!e.target.files) return;
@@ -182,7 +184,7 @@ const TaskProcessCommentForm: FC<Props> = ({ onClose, defaultValues, pageType })
         <Button
           type="submit"
           colorScheme='yellow'
-          color='white'
+          color={btnTextPrimaryColor}
         >
           {pageType === "NEW" ? "登録" : "更新"}
         </Button>

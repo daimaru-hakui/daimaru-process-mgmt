@@ -5,20 +5,20 @@ import {
   Heading,
   Stack,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import TaskEdit from "../../components/task/TaskEdit";
 import { useUtils } from "../../hooks/useUtils";
 import { Task } from "../../../types";
 import { FC } from "react";
 import { useStore } from "../../../store";
+import { useColors } from "../../hooks/useColors";
 
 type Props = {
   task: Task;
 };
 
 const TaskContent: FC<Props> = ({ task }) => {
-  const bg = useColorModeValue("white", "gray.700");
+  const { bgPrimaryColor } = useColors();
   const { formatTime } = useUtils();
   const staffs = useStore((state) => state.staffs);
 
@@ -30,7 +30,7 @@ const TaskContent: FC<Props> = ({ task }) => {
   };
 
   return (
-    <Container p={6} bg={bg} rounded="md" shadow="md" maxW={1000}>
+    <Container p={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
       <Flex justify="space-between">
         <Heading as="h2" fontSize="2xl">
           詳細

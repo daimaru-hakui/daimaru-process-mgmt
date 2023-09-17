@@ -23,7 +23,7 @@ type Props = {
   setValue: UseFormSetValue<Inputs>;
 };
 
-const QrcodeReader: FC<Props> = ({  setValue }) => {
+const QrcodeReader: FC<Props> = ({ setValue }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const controlsRef = useRef<IScannerControls | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -100,7 +100,6 @@ const QrcodeReader: FC<Props> = ({  setValue }) => {
               </Button>
             </Flex>
           </ModalBody>
-
           <ModalFooter>
             <Button
               variant="ghost"

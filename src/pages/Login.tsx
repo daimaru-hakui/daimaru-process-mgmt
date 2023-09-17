@@ -4,16 +4,17 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { useUtils } from "../hooks/useUtils";
+import { useColors } from "../hooks/useColors";
 
 type Inputs = {
   email: string,
   password: string,
 };
 
-
 const Login = () => {
-  const {showToast} = useUtils()
+  const { showToast } = useUtils();
   const navigate = useNavigate();
+  const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = data => {
     signIn(data);
@@ -22,19 +23,18 @@ const Login = () => {
   const signIn = (data: Inputs) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
-        showToast(`ログインに成功しました。${userCredential.user.email}`,"success")
+        showToast(`ログインに成功しました。${userCredential.user.email}`, "success");
         navigate("/dashboard");
       }).catch((error) => {
-        showToast(`ログインに失敗しました。`,"success")
+        showToast(`ログインに失敗しました。`, "success");
         console.log(error);
       });
   };
 
   return (
     <Flex justify="center" align="center" minH="100vh">
-      <Container p={6} maxW={350} bg="white" rounded="md" boxShadow="md">
+      <Container p={6} maxW={350} bg={bgPrimaryColor} rounded="md" boxShadow="md">
         <form onSubmit={handleSubmit(onSubmit)}>
-
           <Stack spacing={6}>
             <Box fontSize="2xl" textAlign="center">login</Box>
             <Box>
@@ -47,15 +47,13 @@ const Login = () => {
               <Text >password</Text>
               <Input mt={1} type="password" placeholder="password"
                 {...register('password', { required: true })} />
-              {errors.password && <Box color="red.400">passwordを入力してくださ。</Box>}
+              {errors.password && <Box color="red.400">passwordを入力してください。</Box>}
             </Box>
-            <Button type="submit" colorScheme="yellow" color="white">ログイン</Button>
+            <Button type="submit" colorScheme="yellow" color={btnTextPrimaryColor}>ログイン</Button>
           </Stack>
         </form>
       </Container>
     </Flex>
-
-
   );
 };
 

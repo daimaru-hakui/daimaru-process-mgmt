@@ -1,17 +1,18 @@
 import { FC } from "react";
 import GanttLine from "./GanttLine";
 import { Task } from "../../../types";
-import { Box, Flex, Container, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Container } from "@chakra-ui/react";
 import GanttLabel from "./GanttLabel";
 import { format } from "date-fns";
 import { useUtils } from "../../hooks/useUtils";
+import { useColors } from "../../hooks/useColors";
 
 type Props = {
   task: Task;
 };
 
 const GanttChart: FC<Props> = ({ task }) => {
-  const bg = useColorModeValue("white", "gray.700");
+  const { bgPrimaryColor } = useColors();
   const { timeCalc, totalDayCount } = useUtils();
   const endTime = Math.max(
     +task.pattern.endTime || 0,
@@ -38,7 +39,7 @@ const GanttChart: FC<Props> = ({ task }) => {
   if (!endTime) return;
 
   return (
-    <Container mt={6} p={6} bg={bg} rounded="md" shadow="md" maxW={1000}>
+    <Container mt={6} p={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
       <Box overflow="auto">
         <Box minW={900}>
           <Flex justify="space-between">

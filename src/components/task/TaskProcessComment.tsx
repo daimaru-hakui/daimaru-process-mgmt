@@ -1,18 +1,19 @@
-import { Container, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
+import { Container, Flex, Heading } from '@chakra-ui/react';
 import TaskProcessCommentCreate from './TaskProcessCommentCreate';
 import { Task } from '../../../types';
 import { FC } from "react";
 import TaskProcessCommentList from './TaskProcessCommentList';
 import { PROCESS_LIST } from '../../utils/constants';
+import { useColors } from '../../hooks/useColors';
 
 type Props = {
   task: Task;
 };
 
 const TaskProcessComment: FC<Props> = ({ task }) => {
-  const bg = useColorModeValue("white", "gray.700");
+  const { bgPrimaryColor } = useColors();
   return (
-    <Container mt={6} p={6} bg={bg} rounded="md" shadow="md" maxW={1000}>
+    <Container mt={6} p={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
       <Flex justify="space-between" align="center">
         <Heading as="h2" fontSize="2xl">
           各工程コメント

@@ -19,7 +19,6 @@ type Props = {
 const AllTasksTable: FC<Props> = ({ tasks }) => {
   const { bgPrimaryColor } = useColors();
   return (
-
     <TableContainer w="full" p={0} mt={3} overflowX="unset" overflowY="unset">
       <Box
         overflow="auto"

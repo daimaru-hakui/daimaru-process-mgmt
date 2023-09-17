@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, MenuDivider, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, IconButton, MenuDivider } from "@chakra-ui/react";
 // import { headerLinks } from "../utils/Links";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,7 +6,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  // MenuDivider,
 } from '@chakra-ui/react';
 import { IoMenuSharp } from "react-icons/io5";
 import { auth } from "../../firebase";
@@ -14,10 +13,12 @@ import DrowerSidebar from "./DrowerSidebar";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { useStore } from '../../store';
 import Logo from "./Logo";
+import { useColors } from "../hooks/useColors";
+import ColorModeButton from "./ColorModeButton";
 // import ColorModeButton from "./ColorModeButton";
 
 const Navbar = () => {
-  const bg = useColorModeValue('white', 'gray.700');
+  const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
   const session = useStore((state) => state.session);
   const navigate = useNavigate();
   const toggleSidebar = useStore((state) => state.toggleSidebar);
@@ -28,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <Flex as="header" position="sticky" top={0} zIndex={10} px={6} h={12} w="full" justify="space-between" align="center" bg={bg} shadow="sm">
+    <Flex as="header" position="sticky" top={0} zIndex={10} px={6} h={12} w="full" justify="space-between" align="center" bg={bgPrimaryColor} shadow="sm">
       <Box display={{ base: "block", md: "none" }}>
         <DrowerSidebar />
       </Box>
@@ -39,16 +40,15 @@ const Navbar = () => {
         <HiMenuAlt2 fontSize={24} cursor="pointer" onClick={() => toggleSidebar(!isSidebar)} />
       </Box>
       <Flex as="nav" gap={3} align="center">
-
         <Menu>
-          {/* <ColorModeButton /> */}
+          <ColorModeButton />
           <MenuButton
             as={IconButton}
             aria-label='Options'
-            icon={<IoMenuSharp fontSize={20} color={bg} />}
+            icon={<IoMenuSharp fontSize={20} color={btnTextPrimaryColor} />}
             colorScheme="yellow"
           />
-          <MenuList>
+          <MenuList bg={bgPrimaryColor}>
             <Box p={1} px={3}>{session?.email}</Box>
             {/* <MenuItem>ダッシュボード</MenuItem> */}
             <MenuDivider />

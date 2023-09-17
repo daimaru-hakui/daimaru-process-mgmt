@@ -1,8 +1,9 @@
-import { Container, Heading, useColorModeValue } from "@chakra-ui/react";
+import { Container, Heading } from "@chakra-ui/react";
 import TaskForm from "../components/task/TaskForm";
+import { useColors } from "../hooks/useColors";
 
 const AddTask = () => {
-  const bg = useColorModeValue("white", "gray.700");
+  const { bgPrimaryColor } = useColors();
 
   const defaultValues = {
     serialNumber: "",
@@ -68,7 +69,7 @@ const AddTask = () => {
   };
 
   return (
-    <Container p={6} bg={bg} rounded="md" shadow="md">
+    <Container p={6} bg={bgPrimaryColor} rounded="md" shadow="md">
       <Heading as="h2" fontSize="2xl">
         加工指示書登録
       </Heading>

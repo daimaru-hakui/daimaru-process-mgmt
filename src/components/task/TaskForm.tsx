@@ -25,6 +25,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { db } from "../../../firebase";
 import { useUtils } from "../../hooks/useUtils";
 import { useStore } from "../../../store";
+import { useColors } from "../../hooks/useColors";
 
 type Inputs = {
   id?: string;
@@ -53,6 +54,7 @@ type Props = {
 
 const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
   const { showToast, mathRound2nd } = useUtils();
+  const { btnTextPrimaryColor } = useColors();
   const coefficients = useStore((state) => state.coefficients);
   const staffs = useStore((state) => state.staffs);
   const [standardCmt, setStandardCmt] = useState<number | string>(
@@ -342,7 +344,7 @@ const TaskForm: FC<Props> = ({ defaultValues, pageType, onClose }) => {
           <Text>備考</Text>
           <Textarea mt={1} {...register("comment")} />
         </Box>
-        <Button type="submit" colorScheme="yellow" color="white">
+        <Button type="submit" colorScheme="yellow" color={btnTextPrimaryColor}>
           {pageType === "NEW" ? "登録" : "更新"}
         </Button>
       </Stack>

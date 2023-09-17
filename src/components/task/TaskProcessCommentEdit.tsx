@@ -3,6 +3,7 @@ import TaskProcessCommentForm from './TaskProcessCommentForm';
 import { FC } from 'react';
 import { AiOutlineEdit } from "react-icons/ai";
 import { Comment } from '../../../types';
+import { useColors } from '../../hooks/useColors';
 
 type Props = {
   comment: Comment;
@@ -11,6 +12,7 @@ type Props = {
 
 const TaskProcessCommentEdit: FC<Props> = ({ comment, taskId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bgPrimaryColor } = useColors();
 
   const defaultValues = {
     taskId: taskId,
@@ -25,7 +27,7 @@ const TaskProcessCommentEdit: FC<Props> = ({ comment, taskId }) => {
       <AiOutlineEdit cursor="pointer" onClick={onOpen} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={bgPrimaryColor}>
           <ModalHeader>コメント</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

@@ -9,15 +9,15 @@ import {
   Th,
   Td,
   TableContainer,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { useStore } from "../../store";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useColors } from '../hooks/useColors';
 
 const Admin = () => {
   const users = useStore((state) => state.users);
-  const bg = useColorModeValue('white', 'gray.700');
+  const { bgPrimaryColor } = useColors();
 
   const handleChangeSwitch = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -34,18 +34,16 @@ const Admin = () => {
     });
   };
 
-
   return (
     <Container
       p={6}
       w="full"
       maxW={1200}
-      bg={bg}
+      bg={bgPrimaryColor}
       rounded="md"
       shadow="md"
     >
       <Heading as="h2" fontSize="2xl">権限管理</Heading>
-
       <TableContainer w="full" p={0} m={0}>
         <Table variant='simple'>
           <Thead>
@@ -73,7 +71,6 @@ const Admin = () => {
         </Table>
       </TableContainer>
     </Container >
-
   );
 };
 

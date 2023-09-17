@@ -15,6 +15,7 @@ import { useUtils } from "../../hooks/useUtils";
 import { useStore } from "../../../store";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { useColors } from "../../hooks/useColors";
 
 type Props = {
   task: Task;
@@ -22,7 +23,9 @@ type Props = {
 
 const AlltasksTableRow: FC<Props> = memo(({ task }) => {
   const { showToast } = useUtils();
+  const { btnTextPrimaryColor } = useColors();
   const staffs = useStore((state) => state.staffs);
+
   const deleteTask = async (id: string) => {
     const result = confirm("削除して宜しいででしょうか");
     if (!result) return;
@@ -50,7 +53,7 @@ const AlltasksTableRow: FC<Props> = memo(({ task }) => {
     >
       <Td>
         <Link to={`/dashboard/all-tasks/${task.id}`}>
-          <Button size="xs" colorScheme="yellow" color="white">
+          <Button size="xs" colorScheme="yellow" color={btnTextPrimaryColor}>
             詳細
           </Button>
         </Link>

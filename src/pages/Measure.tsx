@@ -5,7 +5,6 @@ import {
   Flex,
   Heading,
   Input,
-  useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -16,6 +15,7 @@ import { useStore } from "../../store";
 import QrcodeReader from "../components/QrcodeReader";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ReturnButton from "../components/ReturnButton";
+import { useColors } from "../hooks/useColors";
 
 type Inputs = {
   serialNumber: string;
@@ -25,7 +25,7 @@ const Measure = () => {
   const session = useStore((state) => state.session);
   const currentUser = session?.uid;
   const toast = useToast();
-  const bg = useColorModeValue("white", "gray.700");
+  const { bgPrimaryColor } = useColors();
   const { pathname } = useLocation();
   const name = pathname.split("/").pop();
   const select = pathname.split("/").slice(-2).shift();
@@ -152,7 +152,7 @@ const Measure = () => {
 
   return (
     <>
-      <Container p={6} w="full" maxW={1200} bg={bg} rounded="md" shadow="md">
+      <Container p={6} w="full" maxW={1200} bg={bgPrimaryColor} rounded="md" shadow="md">
         <Heading
           as="h2"
           fontSize={24}
