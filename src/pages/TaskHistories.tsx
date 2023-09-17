@@ -24,7 +24,7 @@ import AllTasksTable from "../components/task/AllTasksTable";
 const TaskHistories = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [csvData, setCsvData] = useState<any[]>([]);
-  const { bgPrimaryColor } = useColors();
+  const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
   const { animationOpacity } = useUtils();
 
   useEffect(() => {
@@ -69,12 +69,12 @@ const TaskHistories = () => {
         <Heading as="h2" fontSize="2xl">
           加工指示書完了履歴
         </Heading>
-        <Flex gap={3}>
+        <Flex gap={3} display={{ base: "none", md: "flex" }}>
           <CSVLink data={csvData} filename={"加工指示書一覧.csv"}>
             <Button>CSV</Button>
           </CSVLink>
           <Link to="/dashboard/add-task">
-            <Button colorScheme="yellow" color="white">
+            <Button colorScheme="yellow" color={btnTextPrimaryColor}>
               追加
             </Button>
           </Link>
