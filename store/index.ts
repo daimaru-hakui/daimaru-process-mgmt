@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Coefficient, Staff, User } from "../types";
+import { Coefficient, Staff, Task, User } from "../types";
 import { UserInfo } from "firebase/auth";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
@@ -27,6 +27,8 @@ type Store = {
   };
   setSearchDate: (value: string, name: string) => void;
   resetSearchDate: () => void;
+  filterTasks: Task[] | null,
+  setFilterTasks: (payload: Task[]) => void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -81,4 +83,6 @@ export const useStore = create<Store>((set) => ({
       endDate: "",
     }
   }),
+  filterTasks: null,
+  setFilterTasks: (payload) => set({ filterTasks: payload })
 }));

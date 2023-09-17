@@ -12,7 +12,7 @@ const TaskSchedule: FC<Props> = ({ task }) => {
   const { bgPrimaryColor } = useColors();
 
   return (
-    <Container maxW={1000} p={6} mb={6} bg={bgPrimaryColor} rounded="md" shadow="md">
+    <Container maxW={1000} p={6} mt={6} bg={bgPrimaryColor} rounded="md" shadow="md">
       <Flex justify="space-between">
         <Heading as="h2" fontSize="2xl">生産スケジュール</Heading>
         <TaskScheduleEdit task={task} />

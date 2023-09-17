@@ -33,7 +33,9 @@ const AllTasks = () => {
   const setSearchStaff = useStore((state) => state.setSearchStaff);
   const searchDate = useStore((state) => state.searchDate);
   const resetSearchDate = useStore((state) => state.resetSearchDate);
-  const [filterTasks, setFilterTasks] = useState<Task[] | null>(null);
+  const filterTasks = useStore((state) => state.filterTasks);
+  const setFilterTasks = useStore((state) => state.setFilterTasks);
+  // const [filterTasks, setFilterTasks] = useState<Task[] | null>(null);
   const [csvData, setCsvData] = useState<any[]>([]);
   const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
   const { animationOpacity } = useUtils();
@@ -77,7 +79,7 @@ const AllTasks = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [tasks, searchText, searchStaff, searchDate]);
+  }, [tasks, searchText, searchStaff, searchDate, setFilterTasks]);
 
   useEffect(() => {
     const createCSV = () => {

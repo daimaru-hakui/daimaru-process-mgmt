@@ -10,14 +10,18 @@ import {
   Button,
   Flex,
   Box,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { HiMenuAlt2 } from "react-icons/hi";
 import { sidebarLinks } from '../utils/Links';
 import { Link, useLocation } from 'react-router-dom';
+import { useColors } from '../hooks/useColors';
 
 const DrowerSidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pathname } = useLocation();
+  const { bgPrimaryColor } = useColors();
+  const listColor = useColorModeValue('gray.100', 'gray.700');
 
   return (
     <>
@@ -31,7 +35,7 @@ const DrowerSidebar = () => {
         onClose={onClose}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={bgPrimaryColor}>
           <DrawerCloseButton />
           <DrawerHeader>menu</DrawerHeader>
 
@@ -45,8 +49,8 @@ const DrowerSidebar = () => {
                   justify="start"
                   align="center"
                   rounded="md"
-                  _hover={{ bg: "gray.100" }}
-                  bg={pathname === path ? "gray.100" : "transparent"}
+                  _hover={{ bg: listColor }}
+                  bg={pathname === path ? listColor : "transparent"}
                 >
                   <Box>{icon}</Box>
                   <Box ml={6} >{name}</Box>
