@@ -14,15 +14,15 @@ import {
 import { FC } from 'react';
 import { MdSearch } from "react-icons/md";
 import AllTasksSearchInput from './AllTasksSearchInput';
+import { useColors } from '../../hooks/useColors';
 
 type Props = {
   onReset: () => void;
 };
 
-const AllTasksSearchDrawer: FC<Props> = ({
-  onReset
-}) => {
+const AllTasksSearchDrawer: FC<Props> = ({ onReset }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { bgPrimaryColor } = useColors();
 
   return (
     <>
@@ -46,7 +46,7 @@ const AllTasksSearchDrawer: FC<Props> = ({
         onClose={onClose}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={bgPrimaryColor}>
           <DrawerCloseButton />
           <DrawerHeader>Search</DrawerHeader>
 
