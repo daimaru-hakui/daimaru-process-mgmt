@@ -89,7 +89,7 @@ const DashboardLayout = () => {
         <Sidebar />
         <Grid as="main" alignContent="start">
           <Navbar />
-          <Box p={{ base: 6, md: 12 }} w="full" overflow="hidden">
+          <Box p={{ base: 3, md: 12 }} w="full" overflow="hidden">
             <Outlet />
           </Box>
         </Grid>

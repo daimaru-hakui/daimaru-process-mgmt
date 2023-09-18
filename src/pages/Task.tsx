@@ -55,7 +55,7 @@ const Task = () => {
   if (!task) return;
 
   return (
-    <Stack spacing={6} p={0} pb={{ base: 12, md: 0 }} animation={animationOpacity}>
+    <Stack spacing={{ base: 3, md: 6 }} p={0} pb={{ base: 12, md: 0 }} animation={animationOpacity}>
       <TaskNextPrev nextId={nextId} prevId={prevId} isCompleted={task.isCompleted} />
       <TaskSchedule task={task} />
       <TaskContent task={task} />
