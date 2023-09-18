@@ -1,61 +1,86 @@
-import { Box, Container, Flex, Heading, Input } from '@chakra-ui/react';
+import { useEffect, useState } from "react";
+import { Box, Container, Flex, Heading, Spinner } from '@chakra-ui/react';
 import { useColors } from '../hooks/useColors';
 import GanttProductionChart from '../components/gantt/GanttProductionChart';
-import { useState } from 'react';
 import { useUtils } from '../hooks/useUtils';
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from '../../firebase';
+import { Task } from '../../types';
+import { useStore } from '../../store';
+import AllTasksSearchBar from '../components/task/AllTasksSearchBar';
 
 const AllProductions = () => {
   const { bgPrimaryColor } = useColors();
-  const [date, setDate] = useState({ startDate: currentDate(), endDate: threeMonthsLater() });
   const { animationOpacity } = useUtils();
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const searchText = useStore((state) => state.searchText);
+  const setSearchText = useStore((state) => state.setSearchText);
+  const searchStaff = useStore((state) => state.searchStaff);
+  const setSearchStaff = useStore((state) => state.setSearchStaff);
+  const searchDate = useStore((state) => state.searchDate);
+  const resetSearchDate = useStore((state) => state.resetSearchDate);
+  const filterTasks = useStore((state) => state.filterTasks);
+  const setFilterTasks = useStore((state) => state.setFilterTasks);
 
-  function currentDate() {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const mounthStr = ("0" + month).slice(-2);
-    const day = date.getDate();
-    const dayStr = ("0" + day).slice(-2);
-    return `${year}-${mounthStr}-${dayStr}`;
-  }
+  useEffect(() => {
+    const getTasks = async () => {
+      const q = query(
+        collection(db, "tasks"),
+        where("isCompleted", "==", false)
+      );
+      onSnapshot(q, (snapshot) =>
+        setTasks(
+          snapshot.docs
+            .map((doc) => ({ ...doc.data(), id: doc.id } as Task))
+            .sort((a, b) => (+a.id < +b.id ? 1 : -1))
+        )
+      );
+    };
+    getTasks();
+  }, []);
 
-  function threeMonthsLater() {
-    const dt = new Date();
-    const year = dt.getFullYear();
-    dt.setMonth(dt.getMonth() + 1);
-    const month = dt.getMonth() + 1;
-    const mounthStr = ("0" + month).slice(-2);
-    const day = dt.getDate();
-    const dayStr = ("0" + day).slice(-2);
-    return `${year}-${mounthStr}-${dayStr}`;
-  }
+  useEffect(() => {
+    const interval = setTimeout(() => {
+      setFilterTasks(tasks.filter((task) => (
+        task.id.includes(searchText) ||
+        task.processNumber.includes(searchText) ||
+        task.customer.includes(searchText) ||
+        task.productNumber.includes(searchText) ||
+        task.productName.includes(searchText)
+      )).filter((task) => (
+        task.staffId === searchStaff ||
+        searchStaff === ""
+      )).filter((task) => (
+        task.salesDay >= searchDate.startDate ||
+        searchDate.startDate === ""
+      )).filter((task) => (
+        task.salesDay <= searchDate.endDate ||
+        searchDate.endDate === ""
+      )));
+    }, 500);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [tasks, searchText, searchStaff, searchDate, setFilterTasks]);
 
-  const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name || currentDate();
-    const value = e.target.value || currentDate();
-
-    if (name === "startDate") {
-      const start = new Date(value).getTime();
-      const end = new Date(date.endDate).getTime();
-      if (start > end) {
-        setDate({ [name]: value, endDate: value });
-        return;
-      }
-    }
-
-    if (name === "endDate") {
-      const start = new Date(date.startDate).getTime();
-      const end = new Date(value).getTime();
-      if (start > end) {
-        setDate({ startDate: value, [name]: value });
-        return;
-      }
-    }
-
-    setDate((prev) => {
-      return { ...prev, [name]: value };
-    });
+  const onReset = () => {
+    setSearchText("");
+    setSearchStaff("");
+    resetSearchDate();
   };
+
+  if (!filterTasks) {
+    return (
+      <Flex justify="center" align="center">
+        <Spinner />
+      </Flex>
+    );
+  }
 
   return (
     <Container
@@ -68,28 +93,9 @@ const AllProductions = () => {
     >
       <Heading as="h2" fontSize="2xl">生産スケジュール</Heading>
       <Box>
-        <GanttProductionChart start={date.startDate} end={date.endDate} />
+        <AllTasksSearchBar onReset={onReset} />
+        <GanttProductionChart filterTasks={filterTasks} />
       </Box>
-      <Flex
-        w="full"
-        p={3}
-        justify="center"
-        gap={6}
-        position="fixed"
-        left={0}
-        bottom={0}
-        zIndex={10}
-        bg={"#051e34"}
-        boxShadow="0 0px 5px 3px rgba(0,0,0,0.1)"
-      >
-        <Box>
-          <Input type="date" name="startDate" value={date.startDate} onChange={handleChangeDate} bg={bgPrimaryColor} />
-        </Box>
-        <Box>
-          <Input type="date" name="endDate" value={date.endDate} onChange={handleChangeDate} bg={bgPrimaryColor} />
-        </Box>
-      </Flex >
-
     </Container >
   );
 };

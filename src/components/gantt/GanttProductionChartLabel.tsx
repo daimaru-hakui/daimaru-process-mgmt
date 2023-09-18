@@ -8,7 +8,7 @@ type Props = {
   task: Task;
 };
 
-const GanttProductionLabel: FC<Props> = ({ task }) => {
+const GanttProductionChartLabel: FC<Props> = ({ task }) => {
   return (
     <Flex
       w="100%"
@@ -39,4 +39,4 @@ const GanttProductionLabel: FC<Props> = ({ task }) => {
   );
 };
 
-export default GanttProductionLabel;
+export default GanttProductionChartLabel;

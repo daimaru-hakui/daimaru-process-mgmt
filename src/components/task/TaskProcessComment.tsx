@@ -13,7 +13,7 @@ type Props = {
 const TaskProcessComment: FC<Props> = ({ task }) => {
   const { bgPrimaryColor } = useColors();
   return (
-    <Container mt={6} p={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
+    <Container p={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
       <Flex justify="space-between" align="center">
         <Heading as="h2" fontSize="2xl">
           各工程コメント

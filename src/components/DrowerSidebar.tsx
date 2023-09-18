@@ -16,12 +16,14 @@ import { HiMenuAlt2 } from "react-icons/hi";
 import { sidebarLinks } from '../utils/Links';
 import { Link, useLocation } from 'react-router-dom';
 import { useColors } from '../hooks/useColors';
+import { useStore } from '../../store';
 
 const DrowerSidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pathname } = useLocation();
   const { bgPrimaryColor } = useColors();
   const listColor = useColorModeValue('gray.100', 'gray.700');
+  const setFilterTasks = useStore((state) => state.setFilterTasks);
 
   return (
     <>
@@ -38,10 +40,16 @@ const DrowerSidebar = () => {
         <DrawerContent bg={bgPrimaryColor}>
           <DrawerCloseButton />
           <DrawerHeader>menu</DrawerHeader>
-
           <DrawerBody>
             {sidebarLinks.map(({ path, name, icon }) => (
-              <Link key={path} to={path} onClick={onClose}>
+              <Link key={path} to={path} onClick={() => {
+                onClose();
+                (pathname !== path &&
+                  (path === '/dashboard/all-tasks' ||
+                    path === '/dashboard/all-productions')
+                )
+                  && setFilterTasks(null);
+              }}>
                 <Flex
                   p={1}
                   py={1}

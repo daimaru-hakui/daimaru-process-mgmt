@@ -26,9 +26,8 @@ const TaskNextPrev: FC<Props> = ({ prevId, nextId, isCompleted }) => {
     }, 100);
   };
 
-
   return (
-    <Container p={0} maxW={1000}>
+    <Container mt={{ base: -6, md: 0 }} p={0} maxW={1000}>
       <Flex
         w="full"
         h={12}

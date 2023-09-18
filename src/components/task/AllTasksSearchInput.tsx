@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Input, Select } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { useStore } from '../../../store';
+import { useColors } from '../../hooks/useColors';
 
 type Props = {
   onReset: () => void;
@@ -16,6 +17,7 @@ const AllTasksSearchInput: FC<Props> = ({
   const searchDate = useStore((state) => state.searchDate);
   const setSearchDate = useStore((state) => state.setSearchDate);
   const staffs = useStore((state) => state.staffs);
+  const { bgPrimaryColor, bgSecondaryColor } = useColors();
 
   const DateChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -34,6 +36,7 @@ const AllTasksSearchInput: FC<Props> = ({
         w="full"
         placeholder='Search...'
         value={searchText}
+        bg={searchText ? bgSecondaryColor : bgPrimaryColor}
         onChange={(e) => setSearchText(e.target.value)}
       />
       <Select
@@ -41,6 +44,7 @@ const AllTasksSearchInput: FC<Props> = ({
         w="auto"
         placeholder='担当者を選択'
         value={searchStaff}
+        bg={searchStaff ? bgSecondaryColor : bgPrimaryColor}
         onChange={(e) => setSearchStaff(e.target.value)}
       >
         {staffs.map((staff) => (
@@ -52,6 +56,7 @@ const AllTasksSearchInput: FC<Props> = ({
           type="date"
           name="startDate"
           value={searchDate.startDate}
+          bg={searchDate.startDate ? bgSecondaryColor : bgPrimaryColor}
           onChange={DateChangeHandler}
         />
         <Box>～</Box>
@@ -59,6 +64,7 @@ const AllTasksSearchInput: FC<Props> = ({
           type="date"
           name="endDate"
           value={searchDate.endDate}
+          bg={searchDate.endDate ? bgSecondaryColor : bgPrimaryColor}
           onChange={DateChangeHandler}
         />
       </Flex>

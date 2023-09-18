@@ -39,7 +39,7 @@ const GanttChart: FC<Props> = ({ task }) => {
   if (!endTime) return;
 
   return (
-    <Container mt={6} p={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
+    <Container p={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
       <Box overflow="auto">
         <Box minW={900}>
           <Flex justify="space-between">
