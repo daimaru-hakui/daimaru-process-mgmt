@@ -56,6 +56,10 @@ const TaskProcessCommentList: FC<Props> = ({ taskId, processName }) => {
     });
   };
 
+  const onClickImageUrlOpen = (url: string) => {
+    window.open(url);
+  };
+
   let title;
   switch (processName) {
     case "reception":
@@ -108,7 +112,10 @@ const TaskProcessCommentList: FC<Props> = ({ taskId, processName }) => {
                 comment.images.map((image) => (
                   <Box flex={1}
                     w={{ base: "full", xl: "33.333%" }}
-                    maxW={{ base: "full", xl: "33.333%" }} key={image.path}>
+                    maxW={{ base: "full", xl: "33.333%" }} key={image.path}
+                    cursor="pointer"
+                    onClick={() => onClickImageUrlOpen(image.url)}
+                  >
                     <img src={image.url} />
                   </Box>
                 ))
