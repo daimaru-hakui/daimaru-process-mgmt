@@ -25,7 +25,7 @@ const AllTasksTable: FC<Props> = ({ tasks }) => {
         <TableContainer w="full" p={0} mt={3} overflowX="unset" overflowY="unset">
           <Box
             overflow="auto"
-            maxH={{ base: "calc(100vh - 220px)", md: "calc(100vh - 340px)" }}
+            maxH={{ base: "calc(100vh - 195px)", md: "calc(100vh - 340px)" }}
             w="full"
           >
             <Table variant="simple" size="sm">

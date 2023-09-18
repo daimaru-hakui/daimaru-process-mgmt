@@ -94,6 +94,7 @@ const AllProductions = () => {
       <Heading as="h2" fontSize="2xl">生産スケジュール</Heading>
       <Box>
         <AllTasksSearchBar onReset={onReset} />
+        <Box mt={3} fontSize="xs">全{tasks.length}件中{filterTasks.length}件表示</Box>
         <GanttProductionChart filterTasks={filterTasks} />
       </Box>
     </Container >

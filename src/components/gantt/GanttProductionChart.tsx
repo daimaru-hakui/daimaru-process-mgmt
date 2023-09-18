@@ -34,8 +34,8 @@ const GanttProductionChart: FC<Props> = ({ filterTasks }) => {
       {filterTasks.length !== 0 ? (
         <Box
           overflow="auto"
-          mt={6}
-          maxH={{ base: "calc(100vh - 16rem)", md: "calc(100vh - 23rem)" }}
+          mt={0}
+          maxH={{ base: "calc(100vh - 230px)", md: "calc(100vh - 23rem)" }}
         >
           <GanttProductionTerm termDate={termDate} setTermDate={setTermDate} />
           <GanttProductionChartHeader

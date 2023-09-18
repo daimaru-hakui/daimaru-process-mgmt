@@ -27,7 +27,7 @@ const TaskNextPrev: FC<Props> = ({ prevId, nextId, isCompleted }) => {
   };
 
   return (
-    <Container mt={{ base: -6, md: 0 }} p={0} maxW={1000}>
+    <Container mt={{ base: -3, md: 0 }} p={0} maxW={1000}>
       <Flex
         w="full"
         h={12}
@@ -44,7 +44,7 @@ const TaskNextPrev: FC<Props> = ({ prevId, nextId, isCompleted }) => {
         left={0}
         zIndex={10}
       >
-        <Flex px={{ base: 6, md: 3 }} flex={1} justify="left" align="center">
+        <Flex p={{ base: 3, md: 3 }} flex={1} justify="left" align="center">
           {prevId && (
             <Link
               to={`${URL}/${prevId}`}
@@ -63,10 +63,10 @@ const TaskNextPrev: FC<Props> = ({ prevId, nextId, isCompleted }) => {
           <Link
             to={`${URL}`}
           >
-            <Box p={3} px={6}>一覧</Box>
+            <Box p={3} >一覧</Box>
           </Link>
         </Flex>
-        <Flex px={{ base: 6, md: 3 }} flex={1} justify="right" align="center">
+        <Flex p={{ base: 3, md: 3 }} flex={1} justify="right" align="center">
           {nextId && (
             <Link
               to={`${URL}/${nextId}`}
