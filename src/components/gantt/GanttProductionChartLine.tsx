@@ -9,7 +9,7 @@ type Props = {
   endDate: number;
 };
 
-const GanttProductionLine: FC<Props> = memo(({
+const GanttProductionChartLine: FC<Props> = memo(({
   startPoint,
   endPoint,
   startDate,
@@ -54,4 +54,4 @@ const GanttProductionLine: FC<Props> = memo(({
   );
 });
 
-export default GanttProductionLine;
+export default GanttProductionChartLine;

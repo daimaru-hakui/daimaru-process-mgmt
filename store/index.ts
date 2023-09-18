@@ -28,7 +28,8 @@ type Store = {
   setSearchDate: (value: string, name: string) => void;
   resetSearchDate: () => void;
   filterTasks: Task[] | null,
-  setFilterTasks: (payload: Task[]) => void;
+  setFilterTasks: (payload: Task[] | null) => void;
+  resetFilterTasks: (payload:null)=> void;
 };
 
 export const useStore = create<Store>((set) => ({
@@ -84,5 +85,6 @@ export const useStore = create<Store>((set) => ({
     }
   }),
   filterTasks: null,
-  setFilterTasks: (payload) => set({ filterTasks: payload })
+  setFilterTasks: (payload) => set({ filterTasks: payload }),
+  resetFilterTasks:(payload)=>set({filterTasks:payload})
 }));

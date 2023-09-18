@@ -30,7 +30,7 @@ const TaskContent: FC<Props> = ({ task }) => {
   };
 
   return (
-    <Container p={6} mt={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
+    <Container maxW={1000} p={6} bg={bgPrimaryColor} rounded="md" shadow="md">
       <Flex justify="space-between">
         <Heading as="h2" fontSize="2xl">
           詳細

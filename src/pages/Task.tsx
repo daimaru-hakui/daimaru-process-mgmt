@@ -8,7 +8,7 @@ import TaskSchedule from "../components/task/TaskSchedule";
 import TaskMeasureComment from "../components/task/TaskProcessComment";
 import TaskContent from "../components/task/TaskContent";
 import { useUtils } from "../hooks/useUtils";
-import { Box } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useStore } from "../../store";
 import TaskNextPrev from "../components/task/TaskNextPrev";
 
@@ -55,13 +55,13 @@ const Task = () => {
   if (!task) return;
 
   return (
-    <Box p={0} pb={{ base: 12, md: 0 }} animation={animationOpacity}>
+    <Stack spacing={6} p={0} pb={{ base: 12, md: 0 }} animation={animationOpacity}>
       <TaskNextPrev nextId={nextId} prevId={prevId} isCompleted={task.isCompleted} />
       <TaskSchedule task={task} />
       <TaskContent task={task} />
       <GanttChart task={task} />
       <TaskMeasureComment task={task} />
-    </Box>
+    </Stack>
   );
 };
 

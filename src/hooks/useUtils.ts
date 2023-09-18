@@ -21,6 +21,27 @@ export const useUtils = () => {
     });
   };
 
+  const  currentDate=()=> {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const mounthStr = ("0" + month).slice(-2);
+    const day = date.getDate();
+    const dayStr = ("0" + day).slice(-2);
+    return `${year}-${mounthStr}-${dayStr}`;
+  }
+
+  const  threeMonthsLater=()=> {
+    const dt = new Date();
+    const year = dt.getFullYear();
+    dt.setMonth(dt.getMonth() + 1);
+    const month = dt.getMonth() + 1;
+    const mounthStr = ("0" + month).slice(-2);
+    const day = dt.getDate();
+    const dayStr = ("0" + day).slice(-2);
+    return `${year}-${mounthStr}-${dayStr}`;
+  }
+
   const formatTime = (time: any) => {
     return format(new Date(time), "yyyy年MM月dd日 HH時mm分ss秒");
   };
@@ -101,6 +122,8 @@ export const useUtils = () => {
 
   return {
     showToast,
+    currentDate,
+    threeMonthsLater,
     formatTime,
     timeCalc,
     totalDayCount,

@@ -35,7 +35,6 @@ const AllTasks = () => {
   const resetSearchDate = useStore((state) => state.resetSearchDate);
   const filterTasks = useStore((state) => state.filterTasks);
   const setFilterTasks = useStore((state) => state.setFilterTasks);
-  // const [filterTasks, setFilterTasks] = useState<Task[] | null>(null);
   const [csvData, setCsvData] = useState<any[]>([]);
   const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
   const { animationOpacity } = useUtils();
