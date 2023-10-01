@@ -14,7 +14,27 @@ type Props = {
 const GanttChart: FC<Props> = ({ task }) => {
   const { bgPrimaryColor } = useColors();
   const { timeCalc, totalDayCount } = useUtils();
-  const endTime = Math.max(
+
+  const startPointArray = [
+    +task.pattern.startTime || 0,
+    +task.cutting.startTime || 0,
+    +task.materials.startTime || 0,
+    +task.sewing.startTime || 0,
+    +task.finishing.startTime || 0,
+    +task.warehouse.startTime || 0
+  ].filter((time) => time !== 0);
+  const startPoint = Math.min(...startPointArray);
+
+  const startTimeArray = [
+    task.pattern.startTime,
+    task.cutting.startTime,
+    task.materials.startTime,
+    task.sewing.startTime,
+    task.finishing.startTime,
+    task.warehouse.startTime
+  ].filter((time) => time);
+
+  const endPoint = Math.max(
     +task.pattern.endTime || 0,
     +task.cutting.endTime || 0,
     +task.materials.endTime || 0,
@@ -33,10 +53,11 @@ const GanttChart: FC<Props> = ({ task }) => {
   ].filter((date) => date);
 
   const daysCount = totalDayCount(
-    +endTimeArray[endTimeArray.length - 1]?.toDate() - +task.createdAt?.toDate() || 0
+    +endTimeArray[endTimeArray.length - 1]?.toDate() - Number(task.createdAt?.toDate()) || 0
   );
 
-  if (!endTime) return;
+  if (!endPoint) return;
+
 
   return (
     <Container p={6} bg={bgPrimaryColor} rounded="md" shadow="md" maxW={1000}>
@@ -45,11 +66,11 @@ const GanttChart: FC<Props> = ({ task }) => {
           <Flex justify="space-between">
             <Box mt={1}>
               <Box fontSize="sm" fontWeight="bold">
-                受付時間
+              開始計測時間
               </Box>
               <Box as="span">
                 {format(
-                  new Date(task.createdAt.toDate()),
+                  new Date(startTimeArray[startTimeArray.length -1].toDate()),
                   "yyyy年MM月dd日HH時mm分ss秒"
                 )}
               </Box>
@@ -59,7 +80,7 @@ const GanttChart: FC<Props> = ({ task }) => {
                 実働時間
               </Box>
               {timeCalc(
-                +endTimeArray[endTimeArray.length - 1].toDate() - +task.createdAt.toDate()
+                Number(endTimeArray[endTimeArray.length - 1].toDate()) - Number(startTimeArray[startTimeArray.length -1].toDate())
               )}
             </Box>
             <Box mt={1}>
@@ -105,48 +126,48 @@ const GanttChart: FC<Props> = ({ task }) => {
                 ></Box>
               ))}
               <GanttLine
-                startPoint={task.createdAt}
-                endPoint={endTime}
+                startPoint={startPoint}
+                endPoint={endPoint}
                 startTime={task.pattern.startTime}
                 endTime={task.pattern.endTime}
                 elapsedTime={task.pattern.elapsedTime}
                 color="#FBA1B7"
               />
               <GanttLine
-                startPoint={task.createdAt}
-                endPoint={endTime}
+                startPoint={startPoint}
+                endPoint={endPoint}
                 startTime={task.cutting.startTime}
                 endTime={task.cutting.endTime}
                 elapsedTime={task.cutting.elapsedTime}
                 color="#F0B86E"
               />
               <GanttLine
-                startPoint={task.createdAt}
-                endPoint={endTime}
+                startPoint={startPoint}
+                endPoint={endPoint}
                 startTime={task.materials.startTime}
                 endTime={task.materials.endTime}
                 elapsedTime={task.materials.elapsedTime}
                 color="#F7E987"
               />
               <GanttLine
-                startPoint={task.createdAt}
-                endPoint={endTime}
+                startPoint={startPoint}
+                endPoint={endPoint}
                 startTime={task.sewing.startTime}
                 endTime={task.sewing.endTime}
                 elapsedTime={task.sewing.elapsedTime}
                 color="#9ED2BE"
               />
               <GanttLine
-                startPoint={task.createdAt}
-                endPoint={endTime}
+                startPoint={startPoint}
+                endPoint={endPoint}
                 startTime={task.finishing.startTime}
                 endTime={task.finishing.endTime}
                 elapsedTime={task.finishing.elapsedTime}
                 color="#4477CE"
               />
               <GanttLine
-                startPoint={task.createdAt}
-                endPoint={endTime}
+                startPoint={startPoint}
+                endPoint={endPoint}
                 startTime={task.warehouse.startTime}
                 endTime={task.warehouse.endTime}
                 elapsedTime={task.warehouse.elapsedTime}
