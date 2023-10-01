@@ -66,7 +66,7 @@ const GanttLine: FC<Props> = ({
         onMouseEnter={() => setFlag(true)}
         onMouseLeave={() => setFlag(false)}
       >
-        <Text color="white" textShadow="2xl" whiteSpace="nowrap">
+        <Text textShadow="2xl" whiteSpace="nowrap">
           {timeCalc(elapsedTime)}
         </Text>
       </Flex>

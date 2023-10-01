@@ -32,7 +32,7 @@ const GanttChart: FC<Props> = ({ task }) => {
     task.sewing.startTime,
     task.finishing.startTime,
     task.warehouse.startTime
-  ].filter((time) => time);
+  ].filter((time) => time).sort();
 
   const endPoint = Math.max(
     +task.pattern.endTime || 0,
@@ -50,7 +50,7 @@ const GanttChart: FC<Props> = ({ task }) => {
     task.sewing.endTime,
     task.finishing.endTime,
     task.warehouse.endTime,
-  ].filter((date) => date);
+  ].filter((date) => date).sort();
 
   const daysCount = totalDayCount(
     +endTimeArray[endTimeArray.length - 1]?.toDate() - Number(task.createdAt?.toDate()) || 0
@@ -70,7 +70,7 @@ const GanttChart: FC<Props> = ({ task }) => {
               </Box>
               <Box as="span">
                 {format(
-                  new Date(startTimeArray[startTimeArray.length -1].toDate()),
+                  new Date(startTimeArray[0].toDate()),
                   "yyyy年MM月dd日HH時mm分ss秒"
                 )}
               </Box>
@@ -80,7 +80,8 @@ const GanttChart: FC<Props> = ({ task }) => {
                 実働時間
               </Box>
               {timeCalc(
-                Number(endTimeArray[endTimeArray.length - 1].toDate()) - Number(startTimeArray[startTimeArray.length -1].toDate())
+                Number(endTimeArray[endTimeArray.length - 1].toDate()) -
+                Number(startTimeArray[0].toDate())
               )}
             </Box>
             <Box mt={1}>
