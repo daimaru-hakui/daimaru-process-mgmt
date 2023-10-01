@@ -43,10 +43,10 @@ const GanttProductionChartLine: FC<Props> = memo(({
         transform="translateY(-50%)"
         boxShadow="md"
       >
-        <Box color="white" position="absolute" top={0} left={2}>
+        <Box position="absolute" top={0} left={2} whiteSpace="nowrap">
           {dateTime(startDate) || ""}
         </Box>
-        <Box color="white" position="absolute" bottom={0} left={2}>
+        <Box position="absolute" bottom={0} left={2} whiteSpace="nowrap">
           {dateTime(endDate) || ""}
         </Box>
       </Box>
