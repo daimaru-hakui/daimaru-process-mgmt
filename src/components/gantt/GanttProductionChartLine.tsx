@@ -27,7 +27,7 @@ const GanttProductionChartLine: FC<Props> = memo(({
     <Box
       w="full"
       // w={`${totalWidth * 20}px`}
-      h={16}
+      h={24}
       position="relative"
       zIndex={1}
       borderBottom="1px solid #e5e5e5"
@@ -43,10 +43,10 @@ const GanttProductionChartLine: FC<Props> = memo(({
         transform="translateY(-50%)"
         boxShadow="md"
       >
-        <Box position="absolute" top={0} left={2} whiteSpace="nowrap">
+        <Box position="absolute" top={2} left={2} whiteSpace="nowrap">
           {dateTime(startDate) || ""}
         </Box>
-        <Box position="absolute" bottom={0} left={2} whiteSpace="nowrap">
+        <Box position="absolute" bottom={2} left={2} whiteSpace="nowrap">
           {dateTime(endDate) || ""}
         </Box>
       </Box>

@@ -69,7 +69,7 @@ const GanttProductionChart: FC<Props> = ({ filterTasks }) => {
             </Box>
           </Flex>
         </Box>
-      ) : <Box w="full" py={16} textAlign="center">検索結果はありません。</Box>}
+      ) : <Box w="full" py={24} textAlign="center">検索結果はありません。</Box>}
     </>
   );
 };
