@@ -24,6 +24,7 @@ import AllTasksSearchDrawer from "../components/task/AllTasksSearchDrawer";
 import { useStore } from "../../store";
 import { useColors } from "../hooks/useColors";
 import { useUtils } from "../hooks/useUtils";
+import { getStaffName } from "../utils/functions"
 
 const AllTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -38,6 +39,7 @@ const AllTasks = () => {
   const [csvData, setCsvData] = useState<any[]>([]);
   const { bgPrimaryColor, btnTextPrimaryColor } = useColors();
   const { animationOpacity } = useUtils();
+  const staffs = useStore((state)=> state.staffs)
 
   useEffect(() => {
     const getTasks = async () => {
@@ -87,6 +89,10 @@ const AllTasks = () => {
         filterTasks.map((task) => ({
           "No.": task.id,
           " 加工指示書NO.": task.processNumber,
+          希望納期:task.salesDay,
+          担当者:getStaffName(task.staffId,staffs),
+          顧客名:task.customer,
+          品番:task.productNumber,
           商品名: task.productName,
           サイズ明細: task.sizeDetails,
           数量: task.quantity,
